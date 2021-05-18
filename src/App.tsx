@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
-import { DashboardLayout } from './layouts/DashboardLayout';
-import { AuthLayout } from './layouts/AuthLayout';
+import DashboardLayout from './layouts/DashboardLayout';
+import AuthLayout from './layouts/AuthLayout';
 import { CssBaseline, ThemeProvider } from '@material-ui/core';
 import { theme } from './assets/themes/muiTheme';
 

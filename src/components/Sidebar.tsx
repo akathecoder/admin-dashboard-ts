@@ -57,7 +57,7 @@ const useStyles = makeStyles((theme: Theme) =>
         },
     }),
 );
-export const Sidebar: React.FC = () => {
+const Sidebar: React.FC = () => {
     const classes = useStyles();
 
     type drawerItemType = {
@@ -128,3 +128,5 @@ export const Sidebar: React.FC = () => {
         </Drawer>
     );
 };
+
+export default Sidebar;

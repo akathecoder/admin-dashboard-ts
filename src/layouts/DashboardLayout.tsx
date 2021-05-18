@@ -1,6 +1,6 @@
 import React from 'react';
 import { createStyles, makeStyles, Theme, Typography } from '@material-ui/core';
-import { Sidebar } from '../components/Sidebar';
+import Sidebar from '../components/Sidebar';
 import AppBar from '../components/Appbar';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-export const DashboardLayout: React.FC = () => {
+const DashboardLayout: React.FC = () => {
     const classes = useStyles();
 
     return (
@@ -79,3 +79,5 @@ export const DashboardLayout: React.FC = () => {
         </div>
     );
 };
+
+export default DashboardLayout;

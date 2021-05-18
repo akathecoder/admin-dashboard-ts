@@ -1,9 +1,11 @@
 import React from 'react';
 
-export const AuthLayout: React.FC = () => {
+const AuthLayout: React.FC = () => {
     return (
         <>
             <h1>AuthLayout</h1>
         </>
     );
 };
+
+export default AuthLayout;
