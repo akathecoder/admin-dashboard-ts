@@ -11,7 +11,7 @@ import {
     SvgIconProps,
     Typography,
 } from '@material-ui/core';
-import { variables } from '../assets/themes/variables';
+import { sideBarIndexes, variables } from '../assets/themes/variables';
 import {
     PermIdentityOutlined,
     PeopleAltOutlined,
@@ -57,36 +57,49 @@ const useStyles = makeStyles((theme: Theme) =>
         },
     }),
 );
-const Sidebar: React.FC = () => {
+
+type SidebarProps = {
+    selectedDrawerListItem: sideBarIndexes;
+    setSelectedDrawerListItem: (selectedDrawerListItem: sideBarIndexes) => void;
+};
+
+const Sidebar: React.FC<SidebarProps> = ({ selectedDrawerListItem, setSelectedDrawerListItem }: SidebarProps) => {
     const classes = useStyles();
 
     type drawerItemType = {
+        id: sideBarIndexes;
         name: string;
         icon: SvgIconProps;
     };
 
     const DrawerItems: Array<drawerItemType> = [
         {
+            id: sideBarIndexes.Dashboard,
             name: 'Dashboard',
             icon: <DashboardOutlined />,
         },
         {
+            id: sideBarIndexes.Users,
             name: 'Users',
             icon: <PermIdentityOutlined />,
         },
         {
+            id: sideBarIndexes.Members,
             name: 'Members',
             icon: <PeopleAltOutlined />,
         },
         {
+            id: sideBarIndexes.Articles,
             name: 'Articles',
             icon: <ViewWeekOutlined />,
         },
         {
+            id: sideBarIndexes.Feedback,
             name: 'Feedback',
             icon: <ChatBubbleOutlineOutlined />,
         },
         {
+            id: sideBarIndexes.Report,
             name: 'Report',
             icon: <MailOutlineOutlined />,
         },
@@ -110,7 +123,12 @@ const Sidebar: React.FC = () => {
             <Divider />
             <List className={classes.drawerList}>
                 {DrawerItems.map((item, index) => (
-                    <ListItem button key={item.name}>
+                    <ListItem
+                        button
+                        key={item.name}
+                        onClick={() => setSelectedDrawerListItem(item.id)}
+                        selected={item.id === selectedDrawerListItem}
+                    >
                         <ListItemIcon className={classes.icon}>{item.icon}</ListItemIcon>
                         <ListItemText primary={item.name} key={index} />
                     </ListItem>
@@ -118,7 +136,11 @@ const Sidebar: React.FC = () => {
             </List>
             <Divider />
             <List className={classes.drawerList}>
-                <ListItem button>
+                <ListItem
+                    button
+                    onClick={() => setSelectedDrawerListItem(sideBarIndexes.Settings)}
+                    selected={sideBarIndexes.Settings === selectedDrawerListItem}
+                >
                     <ListItemIcon className={classes.icon}>
                         <MoreHorizOutlined />
                     </ListItemIcon>
