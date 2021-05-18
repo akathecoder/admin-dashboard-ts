@@ -23,22 +23,20 @@ import {
 } from '@material-ui/icons';
 import { COLORS } from '../assets/themes/colors';
 
-const drawerWidth = variables.drawerWidth;
-
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         drawer: {
-            width: drawerWidth,
+            width: variables.drawerWidth,
             flexShrink: 0,
         },
         drawerPaper: {
-            width: drawerWidth,
+            width: variables.drawerWidth,
         },
         // necessary for content to be below app bar
         toolbar: theme.mixins.toolbar,
         drawerToolbar: {
             display: 'table',
-            paddingLeft: '1rem',
+            paddingLeft: '2rem',
         },
         drawerTitle: {
             textAlign: 'left',
@@ -53,7 +51,8 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         icon: {
             minWidth: 'unset',
-            marginRight: '1rem',
+            marginRight: '1.2rem',
+            marginLeft: '1rem',
         },
     }),
 );
