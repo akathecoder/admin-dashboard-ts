@@ -53,6 +53,11 @@ const useStyles = makeStyles((theme: Theme) =>
             minWidth: 'unset',
             marginRight: '1.2rem',
             marginLeft: '1rem',
+            color: 'inherit',
+        },
+        selected: {
+            color: COLORS.AccentBlue,
+            backgroundColor: 'none',
         },
     }),
 );
@@ -127,6 +132,9 @@ const Sidebar: React.FC<SidebarProps> = ({ selectedDrawerListItem, setSelectedDr
                         key={item.name}
                         onClick={() => setSelectedDrawerListItem(item.id)}
                         selected={item.id === selectedDrawerListItem}
+                        classes={{
+                            selected: classes.selected,
+                        }}
                     >
                         <ListItemIcon className={classes.icon}>{item.icon}</ListItemIcon>
                         <ListItemText primary={item.name} key={index} />
@@ -139,6 +147,9 @@ const Sidebar: React.FC<SidebarProps> = ({ selectedDrawerListItem, setSelectedDr
                     button
                     onClick={() => setSelectedDrawerListItem(sideBarIndexes.Settings)}
                     selected={sideBarIndexes.Settings === selectedDrawerListItem}
+                    classes={{
+                        selected: classes.selected,
+                    }}
                 >
                     <ListItemIcon className={classes.icon}>
                         <MoreHorizOutlined />
