@@ -17,6 +17,25 @@ const useStyles = makeStyles({
             backgroundColor: `${COLORS.White} !important`,
         },
     },
+    CellColorTableGray: {
+        color: COLORS.TableGray,
+        fontWeight: 400,
+        fontSize: 13,
+    },
+    CellColorTableBlack: {
+        color: COLORS.TableBlack,
+        fontWeight: 500,
+        fontSize: 15,
+    },
+    tableHeadCellHead: {
+        color: COLORS.TableGray,
+        fontWeight: 500,
+        fontSize: 13,
+    },
+    tableHeadCellSizeSmall: {
+        paddingTop: '10px',
+        paddingBottom: '10px',
+    },
 });
 
 type DataTableProps = {
@@ -36,28 +55,40 @@ const DataTable: React.FC<DataTableProps> = ({ dataBody }: DataTableProps) => {
                             <TableCell
                                 classes={{
                                     stickyHeader: classes.tableHeadBgColor,
+                                    head: classes.tableHeadCellHead,
+                                    sizeSmall: classes.tableHeadCellSizeSmall,
                                 }}
+                                size="small"
                             >
                                 Name
                             </TableCell>
                             <TableCell
                                 classes={{
                                     stickyHeader: classes.tableHeadBgColor,
+                                    head: classes.tableHeadCellHead,
+                                    sizeSmall: classes.tableHeadCellSizeSmall,
                                 }}
+                                size="small"
                             >
                                 Email
                             </TableCell>
                             <TableCell
                                 classes={{
                                     stickyHeader: classes.tableHeadBgColor,
+                                    head: classes.tableHeadCellHead,
+                                    sizeSmall: classes.tableHeadCellSizeSmall,
                                 }}
+                                size="small"
                             >
                                 Role
                             </TableCell>
                             <TableCell
                                 classes={{
                                     stickyHeader: classes.tableHeadBgColor,
+                                    head: classes.tableHeadCellHead,
+                                    sizeSmall: classes.tableHeadCellSizeSmall,
                                 }}
+                                size="small"
                             >
                                 Recent Activity
                             </TableCell>
@@ -72,10 +103,34 @@ const DataTable: React.FC<DataTableProps> = ({ dataBody }: DataTableProps) => {
                                     hover: classes.tableRowHover,
                                 }}
                             >
-                                <TableCell>{row.name}</TableCell>
-                                <TableCell>{row.email}</TableCell>
-                                <TableCell>{row.role}</TableCell>
-                                <TableCell>{row.lastAccessed.toDate().toISOString()}</TableCell>
+                                <TableCell
+                                    classes={{
+                                        body: classes.CellColorTableBlack,
+                                    }}
+                                >
+                                    {row.name}
+                                </TableCell>
+                                <TableCell
+                                    classes={{
+                                        body: classes.CellColorTableGray,
+                                    }}
+                                >
+                                    {row.email}
+                                </TableCell>
+                                <TableCell
+                                    classes={{
+                                        body: classes.CellColorTableGray,
+                                    }}
+                                >
+                                    {row.role}
+                                </TableCell>
+                                <TableCell
+                                    classes={{
+                                        body: classes.CellColorTableGray,
+                                    }}
+                                >
+                                    {row.lastAccessed.toDate().toISOString()}
+                                </TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
