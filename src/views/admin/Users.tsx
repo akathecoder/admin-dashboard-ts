@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { FIREBASE_FIRESTORE_PROJECT_ID } from '../../assets/themes/variables';
-import { CollectionDataType, COLLECTION_ID } from '../../models/firestoreModel';
-import { getCollectionData } from '../../utils/firebase/firestore';
+import { CollectionDataType, COLLECTION_ID, DocumentDataType, userRoleTypes } from '../../models/firestoreModel';
+import { getCollectionData, setDocumentData } from '../../utils/firebase/firestore';
 
 const Users: React.FC = () => {
     const [usersData, setUsersData] = useState<CollectionDataType>([]);
@@ -17,6 +17,21 @@ const Users: React.FC = () => {
     return (
         <>
             <div>Users</div>
+            <div>
+                <button
+                    onClick={() => {
+                        setDocumentData(FIREBASE_FIRESTORE_PROJECT_ID, COLLECTION_ID.USER, {
+                            name: 'string',
+                            role: userRoleTypes.DEVELOPER,
+                            lastAccessed: new Date(),
+                            email: 'string',
+                            profileImage: 'string',
+                        } as DocumentDataType);
+                    }}
+                >
+                    Create
+                </button>
+            </div>
             <div>
                 <pre>{JSON.stringify(usersData, null, 2)}</pre>
             </div>
