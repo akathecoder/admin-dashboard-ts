@@ -27,7 +27,10 @@
         "build": "react-scripts build",
         "test": "react-scripts test",
         "eject": "react-scripts eject",
-        "lint": "eslint '*/**/*.{js,ts,tsx}' --quiet --fix"
+        "lint": "eslint '*/**/*.{js,ts,tsx}' --quiet --fix",
+        "start-chrome-linux": "BROWSER=google-chrome react-scripts start",
+        "start-chrome-windows": "BROWSER=chrome react-scripts start",
+        "start-chrome-macos": "BROWSER='google chrome' react-scripts start"
     },
     "eslintConfig": {
         "extends": [
