@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, createStyles, makeStyles, Theme, Typography } from '@material-ui/core';
+import { Box, createStyles, makeStyles, Theme } from '@material-ui/core';
 import Sidebar from '../components/Sidebar';
 import AppBar from '../components/Appbar';
 import { sideBarIndexes } from '../assets/themes/variables';
@@ -67,7 +67,6 @@ const DashboardLayout: React.FC = () => {
             <Box className={classes.content}>
                 <AppBar />
                 <div className={classes.toolbar} />
-                <Typography variant="h4">{selectedBoxId}</Typography>
                 {getSelectedBox()}
             </Box>
         </div>

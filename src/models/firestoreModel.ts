@@ -1,3 +1,4 @@
+import firebase from 'firebase/app';
 export enum COLLECTION_ID {
     USER = 'USERS',
     MEMBER = 'MEMBERS',
@@ -16,7 +17,7 @@ export interface USER {
     id?: string;
     name: string;
     role: userRoleTypes;
-    lastAccessed: Date;
+    lastAccessed: firebase.firestore.Timestamp;
     email: string;
     profileImage?: string;
 }
@@ -48,12 +49,12 @@ export interface ARTICLE {
     links?: Array<string>;
     type: articleTypes;
     postedBy: string;
-    postedOn: Date;
+    postedOn: firebase.firestore.Timestamp;
 }
 
 export interface FEEDBACK {
     id?: string;
-    createdAt: Date;
+    createdAt: firebase.firestore.Timestamp;
     feedback: string;
     name: string;
     uid: string;
@@ -61,7 +62,7 @@ export interface FEEDBACK {
 
 export interface REPORT {
     id?: string;
-    createdAt: Date;
+    createdAt: firebase.firestore.Timestamp;
     reason: string;
     reportingUserUid: string;
     reportingUserName: string;
