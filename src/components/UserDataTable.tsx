@@ -2,6 +2,7 @@ import { makeStyles, Paper, Table, TableBody, TableCell, TableContainer, TableHe
 import React from 'react';
 import { USER } from '../models/firestoreModel';
 import { COLORS } from '../assets/themes/colors';
+import fromnow from 'fromnow';
 
 const useStyles = makeStyles({
     container: {
@@ -129,7 +130,10 @@ const DataTable: React.FC<DataTableProps> = ({ dataBody }: DataTableProps) => {
                                         body: classes.CellColorTableGray,
                                     }}
                                 >
-                                    {row.lastAccessed.toDate().toISOString()}
+                                    {fromnow(row.lastAccessed.toDate(), {
+                                        max: 1,
+                                        suffix: true,
+                                    })}
                                 </TableCell>
                             </TableRow>
                         ))}
@@ -141,4 +145,3 @@ const DataTable: React.FC<DataTableProps> = ({ dataBody }: DataTableProps) => {
 };
 
 export default DataTable;
-// { dataHead, dataBody }: DataTableProps

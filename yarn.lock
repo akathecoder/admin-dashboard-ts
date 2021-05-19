@@ -5734,6 +5734,11 @@ from2@^2.1.0:
     inherits "^2.0.1"
     readable-stream "^2.0.0"
 
+fromnow@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/fromnow/-/fromnow-3.0.1.tgz#ffa46a8e233e05721ba4c1ae269e92123f6510d4"
+  integrity sha512-yiLiFONFTvJlP4NaaYcJclCExN4wa2EbWJ9cCXqKcFdxkBmiqlDhzGb/yJ8HtvhNh9td7AUwyCW9w9RrLi429A==
+
 fs-extra@^7.0.0:
   version "7.0.1"
   resolved "https://registry.yarnpkg.com/fs-extra/-/fs-extra-7.0.1.tgz#4f189c44aa123b895f722804f55ea23eadc348e9"
