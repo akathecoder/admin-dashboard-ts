@@ -1,3 +1,11 @@
+export enum COLLECTION_ID {
+    USER = 'USERS',
+    MEMBER = 'MEMBERS',
+    ARTICLE = 'ARTICLES',
+    FEEDBACK = 'FEEDBACK',
+    REPORT = 'REPORT',
+}
+
 enum userRoleTypes {
     ADMIN = 'admin',
     MANAGER = 'manager',
@@ -57,3 +65,6 @@ export interface REPORT {
     reportedUserName?: string;
     reportedPostId?: string;
 }
+
+// Data Types
+export type CollectionDataType = Array<ARTICLE | MEMBER | USER | FEEDBACK | REPORT>;

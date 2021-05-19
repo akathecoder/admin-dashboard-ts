@@ -16,14 +16,3 @@ firebase.initializeApp(firebaseConfig);
 export const firestoreDB = firebase.firestore();
 
 export default firebase;
-
-// useEffect(() => {
-//     const fetchData = async () => {
-//         const db = firebase.firestore();
-//         const data = await db.collection('projects').get();
-
-//         console.log(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-//     };
-
-//     fetchData();
-// }, []);
