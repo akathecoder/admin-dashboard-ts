@@ -8,7 +8,12 @@ interface getCollectionDataProps {
 export const getCollectionData: getCollectionDataProps = async (projectId, collectionId) => {
     const data = await firestoreDB.collection('projects').doc(projectId).collection(collectionId).get();
 
-    const collectionData = data.docs.map((doc) => doc.data()) as CollectionDataType;
+    const collectionData = data.docs.map((doc) => {
+        return {
+            ...doc.data(),
+            id: doc.id,
+        };
+    }) as CollectionDataType;
 
     return collectionData;
 };
@@ -20,7 +25,7 @@ interface getDocumentDataProps {
 export const getDocumentData: getDocumentDataProps = async (projectId, collectionId, documentId) => {
     const data = await firestoreDB.collection('projects').doc(projectId).collection(collectionId).doc(documentId).get();
 
-    const documentData = data.data() as DocumentDataType;
+    const documentData = { ...data.data(), id: data.id } as DocumentDataType;
 
     return documentData;
 };
@@ -31,8 +36,5 @@ interface setDocumentDataProps {
 
 export const setDocumentData: setDocumentDataProps = async (projectId, collectionId, document) => {
     const data = await firestoreDB.collection('projects').doc(projectId).collection(collectionId).add(document);
-
     console.log(data);
-
-    // return documentData;
 };

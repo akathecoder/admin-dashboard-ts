@@ -13,6 +13,7 @@ export enum userRoleTypes {
 }
 
 export interface USER {
+    id?: string;
     name: string;
     role: userRoleTypes;
     lastAccessed: Date;
@@ -21,6 +22,7 @@ export interface USER {
 }
 
 export interface MEMBER {
+    id?: string;
     name: string;
     phone: string;
     profileImage?: string;
@@ -39,6 +41,7 @@ enum articleTypes {
 }
 
 export interface ARTICLE {
+    id?: string;
     articleBanner?: string;
     articleTitle: string;
     articleDescription: string;
@@ -49,6 +52,7 @@ export interface ARTICLE {
 }
 
 export interface FEEDBACK {
+    id?: string;
     createdAt: Date;
     feedback: string;
     name: string;
@@ -56,6 +60,7 @@ export interface FEEDBACK {
 }
 
 export interface REPORT {
+    id?: string;
     createdAt: Date;
     reason: string;
     reportingUserUid: string;
