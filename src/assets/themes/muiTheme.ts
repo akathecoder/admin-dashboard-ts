@@ -9,6 +9,14 @@ export const theme = createMuiTheme({
             main: '#109CF1',
             contrastText: '#FFFFFF',
         },
+        error: {
+            main: '#F7685B',
+            contrastText: '#FFFFFF',
+        },
+        warning: {
+            main: '#FFB946',
+            contrastText: '#FFFFFF',
+        },
         contrastThreshold: 3,
         tonalOffset: 0.2,
     },

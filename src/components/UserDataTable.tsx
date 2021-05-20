@@ -1,4 +1,14 @@
-import { makeStyles, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@material-ui/core';
+import {
+    Checkbox,
+    makeStyles,
+    Paper,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
+} from '@material-ui/core';
 import React from 'react';
 import { USER } from '../models/firestoreModel';
 import { COLORS } from '../assets/themes/colors';
@@ -37,13 +47,18 @@ const useStyles = makeStyles({
         paddingTop: '10px',
         paddingBottom: '10px',
     },
+    tableCellPaddingCheckBox: {
+        paddingRight: '4px',
+    },
 });
 
 type DataTableProps = {
     dataBody: Array<USER>;
+    selectedUsers: Array<string>;
+    setSelectedUsers: React.Dispatch<React.SetStateAction<string[]>>;
 };
 
-const DataTable: React.FC<DataTableProps> = ({ dataBody }: DataTableProps) => {
+const DataTable: React.FC<DataTableProps> = ({ dataBody, selectedUsers, setSelectedUsers }: DataTableProps) => {
     const classes = useStyles();
     console.log(dataBody);
 
@@ -53,6 +68,17 @@ const DataTable: React.FC<DataTableProps> = ({ dataBody }: DataTableProps) => {
                 <Table stickyHeader>
                     <TableHead>
                         <TableRow>
+                            <TableCell
+                                classes={{
+                                    stickyHeader: classes.tableHeadBgColor,
+                                    head: classes.tableHeadCellHead,
+                                    sizeSmall: classes.tableHeadCellSizeSmall,
+                                }}
+                                size="small"
+                                padding="checkbox"
+                            >
+                                {/* <Checkbox disabled size="small" /> */}
+                            </TableCell>
                             <TableCell
                                 classes={{
                                     stickyHeader: classes.tableHeadBgColor,
@@ -104,6 +130,24 @@ const DataTable: React.FC<DataTableProps> = ({ dataBody }: DataTableProps) => {
                                     hover: classes.tableRowHover,
                                 }}
                             >
+                                <TableCell
+                                    padding="checkbox"
+                                    classes={{
+                                        paddingCheckbox: classes.tableCellPaddingCheckBox,
+                                    }}
+                                >
+                                    <Checkbox
+                                        size="small"
+                                        color="primary"
+                                        onChange={(e) => {
+                                            if (e.target.checked) {
+                                                setSelectedUsers([...selectedUsers, row.id!]);
+                                            } else {
+                                                setSelectedUsers(selectedUsers.filter((id) => id !== row.id));
+                                            }
+                                        }}
+                                    />
+                                </TableCell>
                                 <TableCell
                                     classes={{
                                         body: classes.CellColorTableBlack,
