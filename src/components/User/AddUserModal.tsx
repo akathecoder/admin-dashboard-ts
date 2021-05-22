@@ -5,6 +5,7 @@ import { FIREBASE_FIRESTORE_PROJECT_ID } from '../../assets/themes/variables';
 import { userRoleTypes } from '../../models/firestoreModel';
 import { createUser } from '../../utils/userFunctions';
 import CloseIcon from '@material-ui/icons/Close';
+import UserProfilePictureUpload from './UserProfilePictureUpload';
 
 // Modal.setAppElement('#user-dashboard');
 
@@ -32,7 +33,7 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         buttonContainer: {
             display: 'flex',
-            justifyContent: 'flex-end',
+            justifyContent: 'center',
             paddingRight: '1rem',
         },
         headerContainer: {
@@ -55,12 +56,14 @@ const AddUserModal: React.FC<AddUserModalProps> = ({ isOpen, setIsOpen }: AddUse
     const [name, setName] = useState<string>('');
     const [email, setEmail] = useState<string>('');
     const [role, setRole] = useState<userRoleTypes | ''>('');
+    const [profileImage, setProfileImage] = useState<File | null | undefined>();
 
     const closeModal = () => {
         setIsOpen(false);
         setName('');
         setEmail('');
         setRole('');
+        setProfileImage(null);
     };
 
     const handleRoleChange = (role: string): void => {
@@ -87,7 +90,7 @@ const AddUserModal: React.FC<AddUserModalProps> = ({ isOpen, setIsOpen }: AddUse
             return;
         }
 
-        createUser(FIREBASE_FIRESTORE_PROJECT_ID, name, role, email).then(() => {
+        createUser(FIREBASE_FIRESTORE_PROJECT_ID, name, role, email, profileImage).then(() => {
             closeModal();
             window.location.reload();
         });
@@ -97,12 +100,17 @@ const AddUserModal: React.FC<AddUserModalProps> = ({ isOpen, setIsOpen }: AddUse
         <>
             <Modal isOpen={isOpen} onRequestClose={closeModal} style={customStyles} contentLabel="Add User Details">
                 <div className={classes.headerContainer} onClick={closeModal}>
+                    <span />
                     <span>Add user</span>
                     <div className={classes.crossContainer}>
                         <CloseIcon />
                     </div>
                 </div>
                 <form className={classes.root} noValidate autoComplete="off" onSubmit={(e) => handleSubmit(e)}>
+                    <div className={classes.root}>
+                        <UserProfilePictureUpload setImageFilePath={setProfileImage} />
+                    </div>
+
                     <div className={classes.root}>
                         <TextField
                             id="newUserName"
@@ -112,8 +120,10 @@ const AddUserModal: React.FC<AddUserModalProps> = ({ isOpen, setIsOpen }: AddUse
                             value={name}
                             onChange={(e) => setName(e.target.value)}
                             required
+                            fullWidth
                         />
-
+                    </div>
+                    <div className={classes.root}>
                         <TextField
                             id="newUserRole"
                             select
@@ -123,12 +133,14 @@ const AddUserModal: React.FC<AddUserModalProps> = ({ isOpen, setIsOpen }: AddUse
                             value={role}
                             onChange={(e) => handleRoleChange(e.target.value)}
                             required
+                            fullWidth
                         >
                             <MenuItem value={userRoleTypes.ADMIN}>Admin</MenuItem>
                             <MenuItem value={userRoleTypes.MANAGER}>Manager</MenuItem>
                             <MenuItem value={userRoleTypes.DEVELOPER}>Developer</MenuItem>
                         </TextField>
-
+                    </div>
+                    <div className={classes.root}>
                         <TextField
                             id="newUserEmail"
                             label="Email"
@@ -137,6 +149,7 @@ const AddUserModal: React.FC<AddUserModalProps> = ({ isOpen, setIsOpen }: AddUse
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             required
+                            fullWidth
                         />
                     </div>
                     <div className={classes.buttonContainer}>
