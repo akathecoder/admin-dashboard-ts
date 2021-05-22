@@ -7,6 +7,7 @@ import { getCollectionData } from '../../utils/firebase/firestore';
 import { COLORS } from '../../assets/themes/colors';
 import AddUserModal from '../../components/User/AddUserModal';
 import { deleteUsers } from '../../utils/userFunctions';
+import ModifyUserModal from '../../components/User/ModifyUserModal';
 
 const useStyles = makeStyles(() =>
     createStyles({
@@ -49,6 +50,7 @@ const Users: React.FC = () => {
     const [usersData, setUsersData] = useState<CollectionDataType>([]);
     const [selectedUsers, setSelectedUsers] = useState<Array<string>>([]);
     const [isAddUserPanelOpen, setIsAddUserPanelOpen] = useState(false);
+    const [isModifyUserPanelOpen, setIsModifyUserPanelOpen] = useState(false);
 
     useEffect(() => {
         getCollectionData(FIREBASE_FIRESTORE_PROJECT_ID, COLLECTION_ID.USER).then((data) => {
@@ -85,6 +87,7 @@ const Users: React.FC = () => {
                         variant="contained"
                         color="primary"
                         size="large"
+                        onClick={() => setIsModifyUserPanelOpen(true)}
                         disabled={selectedUsers.length === 1 ? false : true}
                     >
                         Modify users
@@ -110,6 +113,11 @@ const Users: React.FC = () => {
             </div>
 
             <AddUserModal isOpen={isAddUserPanelOpen} setIsOpen={setIsAddUserPanelOpen} />
+            <ModifyUserModal
+                isOpen={isModifyUserPanelOpen}
+                setIsOpen={setIsModifyUserPanelOpen}
+                userId={selectedUsers[0]}
+            />
         </div>
     );
 };

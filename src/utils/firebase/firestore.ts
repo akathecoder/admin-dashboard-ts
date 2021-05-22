@@ -30,11 +30,11 @@ export const getDocumentData: getDocumentDataProps = async (projectId, collectio
     return documentData;
 };
 
-interface setDocumentDataProps {
+interface addDocumentProps {
     (projectId: string, collectionId: COLLECTION_ID, document: DocumentDataType): void;
 }
 
-export const setDocumentData: setDocumentDataProps = async (projectId, collectionId, document) => {
+export const addDocument: addDocumentProps = async (projectId, collectionId, document) => {
     const data = await firestoreDB.collection('projects').doc(projectId).collection(collectionId).add(document);
     console.log(data);
 };
@@ -52,4 +52,18 @@ export const deleteDocuments: deleteDocumentsProps = async (projectId, collectio
     );
 
     return deletedUsers;
+};
+
+interface setDocumentProps {
+    (projectId: string, collectionId: COLLECTION_ID, documentId: string, document: DocumentDataType): Promise<void>;
+}
+
+export const setDocument: setDocumentProps = async (projectId, collectionId, documentId, document) => {
+    const data = await firestoreDB
+        .collection('projects')
+        .doc(projectId)
+        .collection(collectionId)
+        .doc(documentId)
+        .set(document);
+    console.log(data);
 };

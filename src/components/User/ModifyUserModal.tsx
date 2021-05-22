@@ -1,16 +1,19 @@
 import { createStyles, makeStyles, MenuItem, TextField, Theme, Button } from '@material-ui/core';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Modal from 'react-modal';
 import { FIREBASE_FIRESTORE_PROJECT_ID } from '../../assets/themes/variables';
-import { userRoleTypes } from '../../models/firestoreModel';
-import { createUser } from '../../utils/userFunctions';
+import { COLLECTION_ID, USER, userRoleTypes } from '../../models/firestoreModel';
+import { modifyUser } from '../../utils/userFunctions';
 import CloseIcon from '@material-ui/icons/Close';
+import { getDocumentData } from '../../utils/firebase/firestore';
+import firebase from 'firebase/app';
 
 // Modal.setAppElement('#user-dashboard');
 
-interface AddUserModalProps {
+interface ModifyUserModalProps {
     isOpen: boolean;
     setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    userId: string;
 }
 const customStyles = {
     content: {
@@ -49,12 +52,31 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-const AddUserModal: React.FC<AddUserModalProps> = ({ isOpen, setIsOpen }: AddUserModalProps) => {
+const ModifyUserModal: React.FC<ModifyUserModalProps> = ({ isOpen, setIsOpen, userId }: ModifyUserModalProps) => {
     const classes = useStyles();
 
+    // const [userData, setUserData] = useState<USER>({} as USER);
     const [name, setName] = useState<string>('');
     const [email, setEmail] = useState<string>('');
     const [role, setRole] = useState<userRoleTypes | ''>('');
+
+    const [profileImage, setProfileImage] = useState('');
+    const [lastAccessed, setLastAccessed] = useState<firebase.firestore.Timestamp>();
+
+    useEffect(() => {
+        if (isOpen) {
+            getDocumentData(FIREBASE_FIRESTORE_PROJECT_ID, COLLECTION_ID.USER, userId).then((result) => {
+                const userResult = result as USER;
+
+                // setUserData(userResult);
+                setName(userResult.name);
+                setEmail(userResult.email);
+                setRole(userResult.role);
+                setProfileImage(userResult.profileImage || '');
+                setLastAccessed(userResult.lastAccessed);
+            });
+        }
+    }, [isOpen]);
 
     const closeModal = () => {
         setIsOpen(false);
@@ -87,9 +109,17 @@ const AddUserModal: React.FC<AddUserModalProps> = ({ isOpen, setIsOpen }: AddUse
             return;
         }
 
-        createUser(FIREBASE_FIRESTORE_PROJECT_ID, name, role, email);
-
-        closeModal();
+        modifyUser(FIREBASE_FIRESTORE_PROJECT_ID, {
+            id: userId,
+            name: name,
+            email: email,
+            role: role,
+            profileImage: profileImage,
+            lastAccessed: lastAccessed,
+        } as USER).then(() => {
+            closeModal();
+            window.location.reload();
+        });
     };
 
     return (
@@ -149,4 +179,4 @@ const AddUserModal: React.FC<AddUserModalProps> = ({ isOpen, setIsOpen }: AddUse
     );
 };
 
-export default AddUserModal;
+export default ModifyUserModal;
