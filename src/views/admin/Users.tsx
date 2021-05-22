@@ -6,6 +6,7 @@ import { CollectionDataType, COLLECTION_ID, USER } from '../../models/firestoreM
 import { getCollectionData } from '../../utils/firebase/firestore';
 import { COLORS } from '../../assets/themes/colors';
 import AddUserModal from '../../components/User/AddUserModal';
+import { deleteUsers } from '../../utils/userFunctions';
 
 const useStyles = makeStyles(() =>
     createStyles({
@@ -56,6 +57,12 @@ const Users: React.FC = () => {
         });
     }, []);
 
+    const deleteSelectedUsers = () => {
+        deleteUsers(selectedUsers).then(() => {
+            window.location.reload();
+        });
+    };
+
     console.log('users');
     console.log(selectedUsers);
 
@@ -68,6 +75,7 @@ const Users: React.FC = () => {
                         color="primary"
                         size="large"
                         disabled={selectedUsers.length === 0 ? true : false}
+                        onClick={deleteSelectedUsers}
                     >
                         Delete users
                     </Button>

@@ -38,3 +38,18 @@ export const setDocumentData: setDocumentDataProps = async (projectId, collectio
     const data = await firestoreDB.collection('projects').doc(projectId).collection(collectionId).add(document);
     console.log(data);
 };
+
+interface deleteDocumentsProps {
+    (projectId: string, collectionId: COLLECTION_ID, documentIdList: Array<string>): Promise<Array<string>>;
+}
+
+export const deleteDocuments: deleteDocumentsProps = async (projectId, collectionId, documentIdList) => {
+    const deletedUsers = await Promise.all(
+        documentIdList.map(async (documentId) => {
+            await firestoreDB.collection('projects').doc(projectId).collection(collectionId).doc(documentId).delete();
+            return documentId;
+        }),
+    );
+
+    return deletedUsers;
+};
