@@ -10,8 +10,8 @@ import {
     TableRow,
 } from '@material-ui/core';
 import React from 'react';
-import { USER } from '../models/firestoreModel';
-import { COLORS } from '../assets/themes/colors';
+import { USER } from '../../models/firestoreModel';
+import { COLORS } from '../../assets/themes/colors';
 import fromnow from 'fromnow';
 
 const useStyles = makeStyles({

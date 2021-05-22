@@ -1,11 +1,11 @@
 import { Button, createMuiTheme, createStyles, makeStyles, ThemeProvider } from '@material-ui/core';
 import React, { useState, useEffect } from 'react';
 import { FIREBASE_FIRESTORE_PROJECT_ID } from '../../assets/themes/variables';
-import DataTable from '../../components/UserDataTable';
-import { CollectionDataType, COLLECTION_ID, DocumentDataType, USER, userRoleTypes } from '../../models/firestoreModel';
-import { getCollectionData, setDocumentData } from '../../utils/firebase/firestore';
-import firebase from 'firebase/app';
+import DataTable from '../../components/User/UserDataTable';
+import { CollectionDataType, COLLECTION_ID, USER } from '../../models/firestoreModel';
+import { getCollectionData } from '../../utils/firebase/firestore';
 import { COLORS } from '../../assets/themes/colors';
+import AddUserModal from '../../components/User/AddUserModal';
 
 const useStyles = makeStyles(() =>
     createStyles({
@@ -47,6 +47,7 @@ const Users: React.FC = () => {
 
     const [usersData, setUsersData] = useState<CollectionDataType>([]);
     const [selectedUsers, setSelectedUsers] = useState<Array<string>>([]);
+    const [isAddUserPanelOpen, setIsAddUserPanelOpen] = useState(false);
 
     useEffect(() => {
         getCollectionData(FIREBASE_FIRESTORE_PROJECT_ID, COLLECTION_ID.USER).then((data) => {
@@ -59,7 +60,7 @@ const Users: React.FC = () => {
     console.log(selectedUsers);
 
     return (
-        <>
+        <div id="user-dashboard">
             <div className={classes.buttonWrapper}>
                 <ThemeProvider theme={redButtonTheme}>
                     <Button
@@ -81,20 +82,7 @@ const Users: React.FC = () => {
                         Modify users
                     </Button>
                 </ThemeProvider>
-                <Button
-                    variant="contained"
-                    color="primary"
-                    size="large"
-                    onClick={() => {
-                        setDocumentData(FIREBASE_FIRESTORE_PROJECT_ID, COLLECTION_ID.USER, {
-                            name: 'string',
-                            role: userRoleTypes.DEVELOPER,
-                            lastAccessed: firebase.firestore.Timestamp.fromDate(new Date()),
-                            email: 'string',
-                            profileImage: 'string',
-                        } as DocumentDataType);
-                    }}
-                >
+                <Button variant="contained" color="primary" size="large" onClick={() => setIsAddUserPanelOpen(true)}>
                     Add users
                 </Button>
             </div>
@@ -106,7 +94,9 @@ const Users: React.FC = () => {
                     setSelectedUsers={setSelectedUsers}
                 />
             </div>
-        </>
+
+            <AddUserModal isOpen={isAddUserPanelOpen} setIsOpen={setIsAddUserPanelOpen} />
+        </div>
     );
 };
 
