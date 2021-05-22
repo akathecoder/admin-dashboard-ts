@@ -4,7 +4,7 @@ import { deleteDocuments, addDocument, setDocument } from './firebase/firestore'
 import { FIREBASE_FIRESTORE_PROJECT_ID } from '../assets/themes/variables';
 
 interface createUserProps {
-    (projectId: string, name: string, role: userRoleTypes, email: string): void;
+    (projectId: string, name: string, role: userRoleTypes, email: string): Promise<void>;
 }
 
 export const createUser: createUserProps = (projectId, name, role, email) => {
@@ -15,7 +15,7 @@ export const createUser: createUserProps = (projectId, name, role, email) => {
         role: role,
     };
 
-    addDocument(projectId, COLLECTION_ID.USER, userDataToAdd as DocumentDataType);
+    return addDocument(projectId, COLLECTION_ID.USER, userDataToAdd as DocumentDataType);
 };
 
 interface deleteUsersProps {

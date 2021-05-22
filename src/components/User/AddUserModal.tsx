@@ -87,9 +87,10 @@ const AddUserModal: React.FC<AddUserModalProps> = ({ isOpen, setIsOpen }: AddUse
             return;
         }
 
-        createUser(FIREBASE_FIRESTORE_PROJECT_ID, name, role, email);
-
-        closeModal();
+        createUser(FIREBASE_FIRESTORE_PROJECT_ID, name, role, email).then(() => {
+            closeModal();
+            window.location.reload();
+        });
     };
 
     return (

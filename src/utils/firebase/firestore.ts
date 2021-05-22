@@ -31,7 +31,7 @@ export const getDocumentData: getDocumentDataProps = async (projectId, collectio
 };
 
 interface addDocumentProps {
-    (projectId: string, collectionId: COLLECTION_ID, document: DocumentDataType): void;
+    (projectId: string, collectionId: COLLECTION_ID, document: DocumentDataType): Promise<void>;
 }
 
 export const addDocument: addDocumentProps = async (projectId, collectionId, document) => {
