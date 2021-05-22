@@ -85,12 +85,18 @@ const Users: React.FC = () => {
                         variant="contained"
                         color="primary"
                         size="large"
-                        disabled={selectedUsers.length === 0 ? true : false}
+                        disabled={selectedUsers.length === 1 ? false : true}
                     >
                         Modify users
                     </Button>
                 </ThemeProvider>
-                <Button variant="contained" color="primary" size="large" onClick={() => setIsAddUserPanelOpen(true)}>
+                <Button
+                    variant="contained"
+                    color="primary"
+                    size="large"
+                    onClick={() => setIsAddUserPanelOpen(true)}
+                    disabled={selectedUsers.length === 0 ? false : true}
+                >
                     Add users
                 </Button>
             </div>

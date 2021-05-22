@@ -35,6 +35,14 @@ const useStyles = makeStyles((theme: Theme) =>
             justifyContent: 'flex-end',
             paddingRight: '1rem',
         },
+        headerContainer: {
+            display: 'flex',
+            justifyContent: 'space-between',
+            paddingRight: '1rem',
+            paddingLeft: '1rem',
+            fontSize: '1.2rem',
+            fontWeight: 500,
+        },
         crossContainer: {
             cursor: 'pointer',
         },
@@ -87,7 +95,8 @@ const AddUserModal: React.FC<AddUserModalProps> = ({ isOpen, setIsOpen }: AddUse
     return (
         <>
             <Modal isOpen={isOpen} onRequestClose={closeModal} style={customStyles} contentLabel="Add User Details">
-                <div className={classes.buttonContainer} onClick={closeModal}>
+                <div className={classes.headerContainer} onClick={closeModal}>
+                    <span>Add user</span>
                     <div className={classes.crossContainer}>
                         <CloseIcon />
                     </div>
