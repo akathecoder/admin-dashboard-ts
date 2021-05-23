@@ -11,6 +11,7 @@ interface AddUserModalProps {
     isOpen: boolean;
     setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
+
 const customStyles = {
     content: {
         top: '55%',

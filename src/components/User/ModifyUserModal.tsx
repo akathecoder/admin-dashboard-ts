@@ -7,6 +7,7 @@ import { modifyUser } from '../../utils/userFunctions';
 import CloseIcon from '@material-ui/icons/Close';
 import { getDocumentData } from '../../utils/firebase/firestore';
 import firebase from 'firebase/app';
+import UserProfilePictureUpload from './UserProfilePictureUpload';
 
 // Modal.setAppElement('#user-dashboard');
 
@@ -15,10 +16,11 @@ interface ModifyUserModalProps {
     setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
     userId: string;
 }
+
 const customStyles = {
     content: {
-        top: '50%',
-        left: '50%',
+        top: '55%',
+        left: '55%',
         right: 'auto',
         bottom: 'auto',
         marginRight: '-50%',
@@ -35,7 +37,7 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         buttonContainer: {
             display: 'flex',
-            justifyContent: 'flex-end',
+            justifyContent: 'center',
             paddingRight: '1rem',
         },
         headerContainer: {
@@ -68,6 +70,8 @@ const ModifyUserModal: React.FC<ModifyUserModalProps> = ({ isOpen, setIsOpen, us
             getDocumentData(FIREBASE_FIRESTORE_PROJECT_ID, COLLECTION_ID.USER, userId).then((result) => {
                 const userResult = result as USER;
 
+                // console.log(userResult);
+
                 // setUserData(userResult);
                 setName(userResult.name);
                 setEmail(userResult.email);
@@ -83,6 +87,7 @@ const ModifyUserModal: React.FC<ModifyUserModalProps> = ({ isOpen, setIsOpen, us
         setName('');
         setEmail('');
         setRole('');
+        setProfileImage('');
     };
 
     const handleRoleChange = (role: string): void => {
@@ -126,12 +131,16 @@ const ModifyUserModal: React.FC<ModifyUserModalProps> = ({ isOpen, setIsOpen, us
         <>
             <Modal isOpen={isOpen} onRequestClose={closeModal} style={customStyles} contentLabel="Add User Details">
                 <div className={classes.headerContainer} onClick={closeModal}>
-                    <span>Add user</span>
+                    <span />
+                    <span>Modify user</span>
                     <div className={classes.crossContainer}>
                         <CloseIcon />
                     </div>
                 </div>
                 <form className={classes.root} noValidate autoComplete="off" onSubmit={(e) => handleSubmit(e)}>
+                    <div className={classes.root}>
+                        <UserProfilePictureUpload imageFilePath={profileImage} setImageFilePath={setProfileImage} />
+                    </div>
                     <div className={classes.root}>
                         <TextField
                             id="newUserName"
@@ -141,8 +150,10 @@ const ModifyUserModal: React.FC<ModifyUserModalProps> = ({ isOpen, setIsOpen, us
                             value={name}
                             onChange={(e) => setName(e.target.value)}
                             required
+                            fullWidth
                         />
-
+                    </div>
+                    <div className={classes.root}>
                         <TextField
                             id="newUserRole"
                             select
@@ -152,12 +163,14 @@ const ModifyUserModal: React.FC<ModifyUserModalProps> = ({ isOpen, setIsOpen, us
                             value={role}
                             onChange={(e) => handleRoleChange(e.target.value)}
                             required
+                            fullWidth
                         >
                             <MenuItem value={userRoleTypes.ADMIN}>Admin</MenuItem>
                             <MenuItem value={userRoleTypes.MANAGER}>Manager</MenuItem>
                             <MenuItem value={userRoleTypes.DEVELOPER}>Developer</MenuItem>
                         </TextField>
-
+                    </div>
+                    <div className={classes.root}>
                         <TextField
                             id="newUserEmail"
                             label="Email"
@@ -166,6 +179,7 @@ const ModifyUserModal: React.FC<ModifyUserModalProps> = ({ isOpen, setIsOpen, us
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             required
+                            fullWidth
                         />
                     </div>
                     <div className={classes.buttonContainer}>

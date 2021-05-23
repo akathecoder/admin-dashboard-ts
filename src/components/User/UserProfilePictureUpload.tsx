@@ -1,10 +1,11 @@
 import { Avatar, IconButton, makeStyles } from '@material-ui/core';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { FIREBASE_FIRESTORE_PROJECT_ID } from '../../assets/themes/variables';
 import { IMAGE_PATH } from '../../models/firebaseStorageModel';
 import { uploadFile } from '../../utils/firebase/storage';
 
 interface UserProfilePictureUploadProps {
+    imageFilePath?: string;
     setImageFilePath: React.Dispatch<React.SetStateAction<string>>;
 }
 
@@ -28,6 +29,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const UserProfilePictureUpload: React.FC<UserProfilePictureUploadProps> = ({
+    imageFilePath,
     setImageFilePath,
 }: UserProfilePictureUploadProps) => {
     const classes = useStyles();
@@ -38,6 +40,17 @@ const UserProfilePictureUpload: React.FC<UserProfilePictureUploadProps> = ({
         downloadUrl: string;
         fileName: string;
     }>({ downloadUrl: '', fileName: '' });
+
+    useEffect(() => {
+        if (imageFilePath) {
+            // console.log(imageFilePath.split(RegExp(/%2..*%2F(.*?)\?alt/))[1].split('.')[0]);
+
+            setUploadedImage({
+                downloadUrl: imageFilePath,
+                fileName: imageFilePath.split(RegExp(/%2..*%2F(.*?)\?alt/))[1].split('.')[0],
+            });
+        }
+    }, [imageFilePath]);
 
     const uploadProfilePicture = (profileImage: File | null | undefined) => {
         if (profileImage) {
