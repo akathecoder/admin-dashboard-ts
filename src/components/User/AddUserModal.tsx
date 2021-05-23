@@ -1,5 +1,5 @@
 import { createStyles, makeStyles, MenuItem, TextField, Theme, Button } from '@material-ui/core';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Modal from 'react-modal';
 import { FIREBASE_FIRESTORE_PROJECT_ID } from '../../assets/themes/variables';
 import { userRoleTypes } from '../../models/firestoreModel';
@@ -7,16 +7,14 @@ import { createUser } from '../../utils/userFunctions';
 import CloseIcon from '@material-ui/icons/Close';
 import UserProfilePictureUpload from './UserProfilePictureUpload';
 
-// Modal.setAppElement('#user-dashboard');
-
 interface AddUserModalProps {
     isOpen: boolean;
     setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 const customStyles = {
     content: {
-        top: '50%',
-        left: '50%',
+        top: '55%',
+        left: '55%',
         right: 'auto',
         bottom: 'auto',
         marginRight: '-50%',
@@ -51,6 +49,10 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 const AddUserModal: React.FC<AddUserModalProps> = ({ isOpen, setIsOpen }: AddUserModalProps) => {
+    useEffect(() => {
+        Modal.setAppElement('#user-dashboard');
+    }, []);
+
     const classes = useStyles();
 
     const [name, setName] = useState<string>('');
