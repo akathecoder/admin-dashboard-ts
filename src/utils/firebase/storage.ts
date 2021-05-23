@@ -3,17 +3,24 @@ import { firebaseStorage } from './firebase';
 import { v4 as uuidv4 } from 'uuid';
 
 interface uploadFileProps {
-    (projectId: string, filePath: IMAGE_PATH, file: File | null | undefined): Promise<string>;
+    (projectId: string, filePath: IMAGE_PATH, file: File | null | undefined, fileName?: string): Promise<{
+        downloadUrl: string;
+        fileName: string;
+    }>;
 }
 
-export const uploadFile: uploadFileProps = async (projectId, filePath, file) => {
+export const uploadFile: uploadFileProps = async (projectId, filePath, file, fileName) => {
     console.log(file?.name.slice(0, -4));
 
-    const storageRef = firebaseStorage.ref(`${projectId}/${filePath}/${uuidv4()}`);
+    if (!fileName) {
+        fileName = uuidv4();
+    }
+
+    const storageRef = firebaseStorage.ref(`${projectId}/${filePath}/${fileName}`);
 
     const downloadUrl: string = await storageRef.put(file as Blob).then((e) => {
         return e.ref.getDownloadURL();
     });
 
-    return downloadUrl;
+    return { downloadUrl: downloadUrl, fileName: fileName };
 };

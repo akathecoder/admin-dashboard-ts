@@ -56,14 +56,14 @@ const AddUserModal: React.FC<AddUserModalProps> = ({ isOpen, setIsOpen }: AddUse
     const [name, setName] = useState<string>('');
     const [email, setEmail] = useState<string>('');
     const [role, setRole] = useState<userRoleTypes | ''>('');
-    const [profileImage, setProfileImage] = useState<File | null | undefined>();
+    const [profileImage, setProfileImage] = useState<string>('');
 
     const closeModal = () => {
         setIsOpen(false);
         setName('');
         setEmail('');
         setRole('');
-        setProfileImage(null);
+        setProfileImage('');
     };
 
     const handleRoleChange = (role: string): void => {
