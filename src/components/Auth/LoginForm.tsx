@@ -43,20 +43,51 @@ const LoginForm: React.FC = () => {
     const classes = useStyles();
     const history = useHistory();
 
-    const [enteredEmail, setEnteredEmail] = useState<string>('');
-    const [enteredPassword, setEnteredPassword] = useState<string>('');
+    const [email, setEmail] = useState<string>('');
+    const [password, setPassword] = useState<string>('');
     const [open, setOpen] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('Incorrect Email or Password');
+
+    const checkEmail = (email: string): boolean => {
+        const emailRegex =
+            /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+        if (emailRegex.test(String(email).toLowerCase())) {
+            return true;
+        }
+        return false;
+    };
+
+    const checkPassword = (password: string): boolean => {
+        if (!password) {
+            return false;
+        }
+        return true;
+    };
 
     const handleSubmit = () => {
-        SignInWithEmailPassword(enteredEmail, enteredPassword).then((result) => {
+        if (!checkEmail(email)) {
+            setErrorMessage('Email Correct Email ID');
+            setOpen(true);
+            return;
+        }
+
+        if (!checkPassword(password)) {
+            setErrorMessage('Email Correct Password');
+            setOpen(true);
+            return;
+        }
+
+        SignInWithEmailPassword(email, password).then((result) => {
             console.log(result);
             if (result) {
                 history.push('/dashboard');
             } else {
+                setErrorMessage('Incorrect Email or Password');
                 setOpen(true);
             }
-            setEnteredEmail('');
-            setEnteredPassword('');
+            setEmail('');
+            setPassword('');
         });
     };
 
@@ -70,8 +101,8 @@ const LoginForm: React.FC = () => {
                         <TextField
                             id="login-email"
                             label="Email ID"
-                            value={enteredEmail}
-                            onChange={(e) => setEnteredEmail(e.target.value)}
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
                             helperText="Enter your Email ID"
                             variant="outlined"
                             fullWidth
@@ -80,8 +111,8 @@ const LoginForm: React.FC = () => {
                             id="outlined-error-helper-text"
                             type="password"
                             label="Password"
-                            value={enteredPassword}
-                            onChange={(e) => setEnteredPassword(e.target.value)}
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
                             helperText="Enter your Password"
                             variant="outlined"
                             fullWidth
@@ -101,7 +132,7 @@ const LoginForm: React.FC = () => {
                 }}
                 open={open}
                 autoHideDuration={6000}
-                message="Incorrect Email or Password"
+                message={errorMessage}
                 onClose={() => setOpen(false)}
                 action={
                     <React.Fragment>
