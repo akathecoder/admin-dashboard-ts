@@ -22,6 +22,7 @@ import {
     MoreHorizOutlined,
 } from '@material-ui/icons';
 import { COLORS } from '../assets/themes/colors';
+import UserInfoSideBar from './Misc/UserInfoSideBar';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -125,6 +126,9 @@ const Sidebar: React.FC<SidebarProps> = ({ selectedDrawerListItem, setSelectedDr
                 </Typography>
             </div>
             <Divider />
+
+            <UserInfoSideBar />
+
             <List className={classes.drawerList}>
                 {DrawerItems.map((item, index) => (
                     <ListItem
