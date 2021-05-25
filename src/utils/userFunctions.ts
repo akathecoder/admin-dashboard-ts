@@ -1,13 +1,21 @@
 import { COLLECTION_ID, DocumentDataType, USER, userRoleTypes } from '../models/firestoreModel';
 import firebase from 'firebase/app';
-import { deleteDocuments, addDocument, setDocument } from './firebase/firestore';
+import { deleteDocuments, setDocument } from './firebase/firestore';
 import { FIREBASE_FIRESTORE_PROJECT_ID } from '../assets/themes/variables';
+import { CreateUserWithEmailAndPassword } from './firebase/auth';
 
 interface createUserProps {
-    (projectId: string, name: string, role: userRoleTypes, email: string, profileImage: string): Promise<void>;
+    (
+        projectId: string,
+        name: string,
+        role: userRoleTypes,
+        email: string,
+        profileImage: string,
+        password: string,
+    ): Promise<void>;
 }
 
-export const createUser: createUserProps = async (projectId, name, role, email, profileImage) => {
+export const createUser: createUserProps = async (projectId, name, role, email, profileImage, password) => {
     const userDataToAdd: USER = {
         name: name,
         email: email,
@@ -16,7 +24,11 @@ export const createUser: createUserProps = async (projectId, name, role, email, 
         profileImage: profileImage || '',
     };
 
-    return addDocument(projectId, COLLECTION_ID.USER, userDataToAdd as DocumentDataType);
+    const uid = await CreateUserWithEmailAndPassword(email, password);
+    console.log('uid: ', uid);
+
+    // return addDocument(projectId, COLLECTION_ID.USER, userDataToAdd as DocumentDataType);
+    return setDocument(projectId, COLLECTION_ID.USER, uid!, userDataToAdd as DocumentDataType);
 };
 
 interface deleteUsersProps {

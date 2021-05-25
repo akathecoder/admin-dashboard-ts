@@ -15,3 +15,19 @@ export const SignInWithEmailPassword: SignInWithEmailPasswordProps = async (emai
             return null;
         });
 };
+
+interface CreateUserWithEmailAndPasswordProps {
+    (email: string, password: string): Promise<string | null | undefined>;
+}
+
+export const CreateUserWithEmailAndPassword: CreateUserWithEmailAndPasswordProps = async (email, password) => {
+    return firebaseAuth
+        .createUserWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+            return userCredential.user?.uid;
+        })
+        .catch((error) => {
+            console.error(error);
+            return null;
+        });
+};

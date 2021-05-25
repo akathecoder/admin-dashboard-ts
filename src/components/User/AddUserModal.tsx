@@ -59,6 +59,7 @@ const AddUserModal: React.FC<AddUserModalProps> = ({ isOpen, setIsOpen }: AddUse
     const [name, setName] = useState<string>('');
     const [email, setEmail] = useState<string>('');
     const [role, setRole] = useState<userRoleTypes | ''>('');
+    const [password, setPassword] = useState<string>('');
     const [profileImage, setProfileImage] = useState<string>('');
 
     const closeModal = () => {
@@ -66,6 +67,7 @@ const AddUserModal: React.FC<AddUserModalProps> = ({ isOpen, setIsOpen }: AddUse
         setName('');
         setEmail('');
         setRole('');
+        setPassword('');
         setProfileImage('');
     };
 
@@ -89,18 +91,18 @@ const AddUserModal: React.FC<AddUserModalProps> = ({ isOpen, setIsOpen }: AddUse
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        if (!name || !email || !role) {
+        if (!name || !email || !role || !password) {
             return;
         }
 
-        createUser(FIREBASE_FIRESTORE_PROJECT_ID, name, role, email, profileImage).then(() => {
+        createUser(FIREBASE_FIRESTORE_PROJECT_ID, name, role, email, profileImage, password).then(() => {
             closeModal();
             window.location.reload();
         });
     };
 
     return (
-        <>
+        <div>
             <Modal isOpen={isOpen} onRequestClose={closeModal} style={customStyles} contentLabel="Add User Details">
                 <div className={classes.headerContainer} onClick={closeModal}>
                     <span />
@@ -155,6 +157,18 @@ const AddUserModal: React.FC<AddUserModalProps> = ({ isOpen, setIsOpen }: AddUse
                             fullWidth
                         />
                     </div>
+                    <div className={classes.root}>
+                        <TextField
+                            id="newUserPassword"
+                            label="Password"
+                            helperText="Please enter user's password"
+                            variant="outlined"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            required
+                            fullWidth
+                        />
+                    </div>
                     <div className={classes.buttonContainer}>
                         <Button variant="outlined" color="primary" size="large" type="submit">
                             Submit
@@ -162,7 +176,7 @@ const AddUserModal: React.FC<AddUserModalProps> = ({ isOpen, setIsOpen }: AddUse
                     </div>
                 </form>
             </Modal>
-        </>
+        </div>
     );
 };
 
