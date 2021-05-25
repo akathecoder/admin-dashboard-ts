@@ -18,7 +18,7 @@ const App: React.FC = () => {
                         <Route path="/login" exact={true}>
                             <AuthLayout />
                         </Route>
-                        <Redirect from="/" to="/dashboard" />
+                        <Redirect from="/" to="/login" />
                         <Route />
                     </Switch>
                 </BrowserRouter>
