@@ -24,7 +24,7 @@ export const createUser: createUserProps = async (projectId, name, role, email, 
         profileImage: profileImage || '',
     };
 
-    const uid = await CreateUserWithEmailAndPassword(email, password);
+    const uid = await CreateUserWithEmailAndPassword(email, password, name, profileImage);
     console.log('uid: ', uid);
 
     // return addDocument(projectId, COLLECTION_ID.USER, userDataToAdd as DocumentDataType);

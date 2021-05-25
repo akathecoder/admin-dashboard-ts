@@ -17,13 +17,22 @@ export const SignInWithEmailPassword: SignInWithEmailPasswordProps = async (emai
 };
 
 interface CreateUserWithEmailAndPasswordProps {
-    (email: string, password: string): Promise<string | null | undefined>;
+    (email: string, password: string, name: string, profileImage: string): Promise<string | null | undefined>;
 }
 
-export const CreateUserWithEmailAndPassword: CreateUserWithEmailAndPasswordProps = async (email, password) => {
+export const CreateUserWithEmailAndPassword: CreateUserWithEmailAndPasswordProps = async (
+    email,
+    password,
+    name,
+    profileImage,
+) => {
     return firebaseAuth
         .createUserWithEmailAndPassword(email, password)
-        .then((userCredential) => {
+        .then(async (userCredential) => {
+            await userCredential.user?.updateProfile({
+                displayName: name,
+                photoURL: profileImage,
+            });
             return userCredential.user?.uid;
         })
         .catch((error) => {
