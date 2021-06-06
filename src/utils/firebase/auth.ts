@@ -6,12 +6,16 @@ interface SignInWithEmailPasswordProps {
 
 export const SignInWithEmailPassword: SignInWithEmailPasswordProps = async (email, password) => {
     return firebaseAuth
-        .signInWithEmailAndPassword(email, password)
-        .then((userCredentials) => {
-            return userCredentials;
+        .setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+        .then(async () => {
+            try {
+                const userCredentials = await firebaseAuth.signInWithEmailAndPassword(email, password);
+                return userCredentials;
+            } catch (e) {
+                return null;
+            }
         })
         .catch(() => {
-            // console.error(error.code, error.message);
             return null;
         });
 };
