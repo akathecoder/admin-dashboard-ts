@@ -1,7 +1,6 @@
 import { createStyles, makeStyles, MenuItem, TextField, Theme, Button } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import Modal from 'react-modal';
-import { FIREBASE_FIRESTORE_PROJECT_ID } from '../../assets/themes/variables';
 import { userRoleTypes } from '../../models/firestoreModel';
 import { createUser } from '../../utils/userFunctions';
 import CloseIcon from '@material-ui/icons/Close';
@@ -95,7 +94,7 @@ const AddUserModal: React.FC<AddUserModalProps> = ({ isOpen, setIsOpen }: AddUse
             return;
         }
 
-        createUser(FIREBASE_FIRESTORE_PROJECT_ID, name, role, email, profileImage, password).then(() => {
+        createUser(name, role, email, profileImage, password).then(() => {
             closeModal();
             window.location.reload();
         });

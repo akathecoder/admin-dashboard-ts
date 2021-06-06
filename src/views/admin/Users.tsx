@@ -1,6 +1,5 @@
 import { Button, createMuiTheme, createStyles, makeStyles, ThemeProvider } from '@material-ui/core';
 import React, { useState, useEffect } from 'react';
-import { FIREBASE_FIRESTORE_PROJECT_ID } from '../../assets/themes/variables';
 import DataTable from '../../components/User/UserDataTable';
 import { CollectionDataType, COLLECTION_ID, USER } from '../../models/firestoreModel';
 import { getCollectionData } from '../../utils/firebase/firestore';
@@ -53,7 +52,7 @@ const Users: React.FC = () => {
     const [isModifyUserPanelOpen, setIsModifyUserPanelOpen] = useState(false);
 
     useEffect(() => {
-        getCollectionData(FIREBASE_FIRESTORE_PROJECT_ID, COLLECTION_ID.USER).then((data) => {
+        getCollectionData(COLLECTION_ID.USER).then((data) => {
             console.log(data);
             setUsersData(data);
         });

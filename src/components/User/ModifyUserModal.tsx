@@ -1,7 +1,6 @@
 import { createStyles, makeStyles, MenuItem, TextField, Theme, Button } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import Modal from 'react-modal';
-import { FIREBASE_FIRESTORE_PROJECT_ID } from '../../assets/themes/variables';
 import { COLLECTION_ID, USER, userRoleTypes } from '../../models/firestoreModel';
 import { modifyUser } from '../../utils/userFunctions';
 import CloseIcon from '@material-ui/icons/Close';
@@ -67,7 +66,7 @@ const ModifyUserModal: React.FC<ModifyUserModalProps> = ({ isOpen, setIsOpen, us
 
     useEffect(() => {
         if (isOpen) {
-            getDocumentData(FIREBASE_FIRESTORE_PROJECT_ID, COLLECTION_ID.USER, userId).then((result) => {
+            getDocumentData(COLLECTION_ID.USER, userId).then((result) => {
                 const userResult = result as USER;
 
                 // console.log(userResult);
@@ -114,7 +113,7 @@ const ModifyUserModal: React.FC<ModifyUserModalProps> = ({ isOpen, setIsOpen, us
             return;
         }
 
-        modifyUser(FIREBASE_FIRESTORE_PROJECT_ID, {
+        modifyUser({
             id: userId,
             name: name,
             email: email,

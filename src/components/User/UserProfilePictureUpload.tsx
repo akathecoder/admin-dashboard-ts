@@ -1,6 +1,5 @@
 import { Avatar, IconButton, makeStyles } from '@material-ui/core';
 import React, { useEffect, useRef, useState } from 'react';
-import { FIREBASE_FIRESTORE_PROJECT_ID } from '../../assets/themes/variables';
 import { IMAGE_PATH } from '../../models/firebaseStorageModel';
 import { uploadFile } from '../../utils/firebase/storage';
 
@@ -55,17 +54,12 @@ const UserProfilePictureUpload: React.FC<UserProfilePictureUploadProps> = ({
     const uploadProfilePicture = (profileImage: File | null | undefined) => {
         if (profileImage) {
             if (!uploadedImage.downloadUrl) {
-                uploadFile(FIREBASE_FIRESTORE_PROJECT_ID, IMAGE_PATH.USER_PROFILE_PICTURE, profileImage).then((url) => {
+                uploadFile(IMAGE_PATH.USER_PROFILE_PICTURE, profileImage).then((url) => {
                     setUploadedImage(url);
                     setImageFilePath(url.downloadUrl);
                 });
             } else {
-                uploadFile(
-                    FIREBASE_FIRESTORE_PROJECT_ID,
-                    IMAGE_PATH.USER_PROFILE_PICTURE,
-                    profileImage,
-                    uploadedImage.fileName,
-                ).then((url) => {
+                uploadFile(IMAGE_PATH.USER_PROFILE_PICTURE, profileImage, uploadedImage.fileName).then((url) => {
                     setUploadedImage(url);
                     setImageFilePath(url.downloadUrl);
                 });

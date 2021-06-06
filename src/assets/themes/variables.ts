@@ -13,4 +13,4 @@ export enum sideBarIndexes {
     Settings,
 }
 
-export const FIREBASE_FIRESTORE_PROJECT_ID = '6zzuwucvOyntEthk9gGN';
+// export const FIREBASE_FIRESTORE_PROJECT_ID = '6zzuwucvOyntEthk9gGN';

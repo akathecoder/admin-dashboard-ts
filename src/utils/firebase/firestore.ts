@@ -2,11 +2,11 @@ import { CollectionDataType, COLLECTION_ID, DocumentDataType } from '../../model
 import { firestoreDB } from './firebase';
 
 interface getCollectionDataProps {
-    (projectId: string, collectionId: COLLECTION_ID): Promise<CollectionDataType>;
+    (collectionId: COLLECTION_ID): Promise<CollectionDataType>;
 }
 
-export const getCollectionData: getCollectionDataProps = async (projectId, collectionId) => {
-    const data = await firestoreDB.collection('projects').doc(projectId).collection(collectionId).get();
+export const getCollectionData: getCollectionDataProps = async (collectionId) => {
+    const data = await firestoreDB.collection(collectionId).get();
 
     const collectionData = data.docs.map((doc) => {
         return {
@@ -19,11 +19,11 @@ export const getCollectionData: getCollectionDataProps = async (projectId, colle
 };
 
 interface getDocumentDataProps {
-    (projectId: string, collectionId: COLLECTION_ID, documentId: string): Promise<DocumentDataType>;
+    (collectionId: COLLECTION_ID, documentId: string): Promise<DocumentDataType>;
 }
 
-export const getDocumentData: getDocumentDataProps = async (projectId, collectionId, documentId) => {
-    const data = await firestoreDB.collection('projects').doc(projectId).collection(collectionId).doc(documentId).get();
+export const getDocumentData: getDocumentDataProps = async (collectionId, documentId) => {
+    const data = await firestoreDB.collection(collectionId).doc(documentId).get();
 
     const documentData = { ...data.data(), id: data.id } as DocumentDataType;
 
@@ -31,22 +31,22 @@ export const getDocumentData: getDocumentDataProps = async (projectId, collectio
 };
 
 interface addDocumentProps {
-    (projectId: string, collectionId: COLLECTION_ID, document: DocumentDataType): Promise<void>;
+    (collectionId: COLLECTION_ID, document: DocumentDataType): Promise<void>;
 }
 
-export const addDocument: addDocumentProps = async (projectId, collectionId, document) => {
-    const data = await firestoreDB.collection('projects').doc(projectId).collection(collectionId).add(document);
+export const addDocument: addDocumentProps = async (collectionId, document) => {
+    const data = await firestoreDB.collection(collectionId).add(document);
     console.log(data);
 };
 
 interface deleteDocumentsProps {
-    (projectId: string, collectionId: COLLECTION_ID, documentIdList: Array<string>): Promise<Array<string>>;
+    (collectionId: COLLECTION_ID, documentIdList: Array<string>): Promise<Array<string>>;
 }
 
-export const deleteDocuments: deleteDocumentsProps = async (projectId, collectionId, documentIdList) => {
+export const deleteDocuments: deleteDocumentsProps = async (collectionId, documentIdList) => {
     const deletedUsers = await Promise.all(
         documentIdList.map(async (documentId) => {
-            await firestoreDB.collection('projects').doc(projectId).collection(collectionId).doc(documentId).delete();
+            await firestoreDB.collection(collectionId).doc(documentId).delete();
             return documentId;
         }),
     );
@@ -55,15 +55,10 @@ export const deleteDocuments: deleteDocumentsProps = async (projectId, collectio
 };
 
 interface setDocumentProps {
-    (projectId: string, collectionId: COLLECTION_ID, documentId: string, document: DocumentDataType): Promise<void>;
+    (collectionId: COLLECTION_ID, documentId: string, document: DocumentDataType): Promise<void>;
 }
 
-export const setDocument: setDocumentProps = async (projectId, collectionId, documentId, document) => {
-    const data = await firestoreDB
-        .collection('projects')
-        .doc(projectId)
-        .collection(collectionId)
-        .doc(documentId)
-        .set(document);
+export const setDocument: setDocumentProps = async (collectionId, documentId, document) => {
+    const data = await firestoreDB.collection(collectionId).doc(documentId).set(document);
     console.log(data);
 };
