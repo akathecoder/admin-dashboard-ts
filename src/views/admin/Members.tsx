@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 // import { COLORS } from '../../assets/themes/colors';
 // import AddUserModal from '../../components/User/AddUserModal';
 // import ModifyUserModal from '../../components/User/ModifyUserModal';
-import { DataGrid, GridColumns, GridRowsProp } from '@material-ui/data-grid';
+import { DataGrid, GridColumns, GridRowsProp, GridToolbar } from '@material-ui/data-grid';
 import { CollectionDataType, COLLECTION_ID } from '../../models/firestoreModel';
 import { getCollectionData } from '../../utils/firebase/firestore';
 // import { deleteUsers } from '../../utils/userFunctions';
@@ -164,7 +164,13 @@ const Members: React.FC = () => {
             </div> */}
 
             <div className={classes.tableWrapper}>
-                <DataGrid columns={columns} rows={membersData as GridRowsProp} />
+                <DataGrid
+                    columns={columns}
+                    rows={membersData as GridRowsProp}
+                    components={{
+                        Toolbar: GridToolbar,
+                    }}
+                />
             </div>
 
             {/* <AddUserModal isOpen={isAddPanelOpen} setIsOpen={setIsAddPanelOpen} /> */}
