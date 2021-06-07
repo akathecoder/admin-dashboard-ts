@@ -3,10 +3,11 @@ import React, { useEffect, useState } from 'react';
 // import { COLORS } from '../../assets/themes/colors';
 // import AddUserModal from '../../components/User/AddUserModal';
 // import ModifyUserModal from '../../components/User/ModifyUserModal';
-import { DataGrid, GridColumns, GridRowsProp, GridToolbar } from '@material-ui/data-grid';
-import { CollectionDataType, COLLECTION_ID } from '../../models/firestoreModel';
+import { DataGrid, GridColumns, GridRowsProp, GridToolbar, GridEditCellPropsParams } from '@material-ui/data-grid';
+import { CollectionDataType, COLLECTION_ID, PrimitiveTypes } from '../../models/firestoreModel';
 import { getCollectionData } from '../../utils/firebase/firestore';
 // import { deleteUsers } from '../../utils/userFunctions';
+import { updateMember } from '../../utils/memberFunctions';
 
 const useStyles = makeStyles(() =>
     createStyles({
@@ -51,55 +52,68 @@ const columns: GridColumns = [
         headerName: 'UID',
         type: 'string',
         width: 400,
+        editable: true,
     },
     {
         field: 'name',
         headerName: 'Name',
         type: 'string',
         width: 300,
+        editable: true,
     },
     {
         field: 'phone',
         headerName: 'Phone No.',
-        type: 'string',
+        type: 'number',
         width: 200,
+        align: 'left',
+        headerAlign: 'left',
+        editable: true,
     },
     {
         field: 'gender',
         headerName: 'Gender',
         type: 'string',
         width: 200,
+        editable: true,
     },
     {
         field: 'email',
         headerName: 'Email ID',
         type: 'string',
         width: 300,
+        editable: true,
     },
     {
         field: 'college',
         headerName: 'College',
         type: 'string',
         width: 300,
+        editable: true,
     },
     {
         field: 'currentProfession',
         headerName: 'Current Profession',
         type: 'string',
         width: 300,
+        editable: true,
     },
 
     {
         field: 'yearOfPassing',
         headerName: 'Year Of Passing',
-        type: 'string',
+        type: 'number',
         width: 200,
+        align: 'left',
+        headerAlign: 'left',
+        editable: true,
     },
     {
         field: 'address',
         headerName: 'Address',
         type: 'string',
         width: 400,
+        editable: true,
     },
 ];
 
@@ -123,6 +137,12 @@ const Members: React.FC = () => {
     //         window.location.reload();
     //     });
     // };
+
+    const updateDataCell = (data: GridEditCellPropsParams) => {
+        console.log('data', data);
+
+        updateMember(data.id as string, data.field, data.props.value as PrimitiveTypes);
+    };
 
     console.log('members');
     // console.log(selectedMembers);
@@ -170,6 +190,7 @@ const Members: React.FC = () => {
                     components={{
                         Toolbar: GridToolbar,
                     }}
+                    onEditCellChangeCommitted={updateDataCell}
                 />
             </div>
 

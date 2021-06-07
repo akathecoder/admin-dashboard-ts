@@ -62,3 +62,12 @@ export const setDocument: setDocumentProps = async (collectionId, documentId, do
     const data = await firestoreDB.collection(collectionId).doc(documentId).set(document);
     console.log(data);
 };
+
+interface updateDocumentProps {
+    (collectionId: COLLECTION_ID, documentId: string, document: Record<string, unknown>): Promise<void>;
+}
+
+export const updateDocument: updateDocumentProps = async (collectionId, documentId, document) => {
+    const data = await firestoreDB.collection(collectionId).doc(documentId).update(document);
+    console.log(data);
+};

@@ -1,4 +1,7 @@
 import firebase from 'firebase/app';
+
+export type PrimitiveTypes = string | number | boolean | firebase.firestore.Timestamp | null;
+
 export enum COLLECTION_ID {
     USER = 'USERS',
     MEMBER = 'MEMBERS',
