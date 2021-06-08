@@ -1,8 +1,5 @@
 import { createStyles, Fab, makeStyles, Theme } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
-// import { COLORS } from '../../assets/themes/colors';
-// import AddUserModal from '../../components/User/AddUserModal';
-// import ModifyUserModal from '../../components/User/ModifyUserModal';
 import {
     DataGrid,
     GridColumns,
@@ -13,21 +10,12 @@ import {
 } from '@material-ui/data-grid';
 import { CollectionDataType, COLLECTION_ID, PrimitiveTypes } from '../../models/firestoreModel';
 import { getCollectionData } from '../../utils/firebase/firestore';
-// import { deleteUsers } from '../../utils/userFunctions';
 import { updateMember, deleteMembers } from '../../utils/memberFunctions';
 import { Add, Delete } from '@material-ui/icons';
 import AddMemberDialog from '../../components/Member/AddMemberDialog';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
-        root: {
-            display: 'flex',
-        },
-        buttonWrapper: {
-            display: 'flex',
-            justifyContent: 'flex-end',
-            gap: '1rem',
-        },
         tableWrapper: {
             marginTop: '1rem',
             marginBottom: '1rem',
@@ -46,24 +34,6 @@ const useStyles = makeStyles((theme: Theme) =>
         },
     }),
 );
-
-// const redButtonTheme = createMuiTheme({
-//     palette: {
-//         primary: {
-//             main: COLORS.Red,
-//             contrastText: COLORS.White,
-//         },
-//     },
-// });
-
-// const yellowButtonTheme = createMuiTheme({
-//     palette: {
-//         primary: {
-//             main: COLORS.Yellow,
-//             contrastText: COLORS.White,
-//         },
-//     },
-// });
 
 const columns: GridColumns = [
     {
@@ -140,9 +110,7 @@ const Members: React.FC = () => {
     const classes = useStyles();
 
     const [membersData, setMembersData] = useState<CollectionDataType>([]);
-    // const [selectedMembers, setSelectedMembers] = useState<Array<string>>([]);
     const [isAddPanelOpen, setIsAddPanelOpen] = useState(false);
-    // const [isModifyPanelOpen, setIsModifyPanelOpen] = useState(false);
 
     const [selectionModel, setSelectionModel] = React.useState<GridRowId[]>([]);
 
@@ -152,12 +120,6 @@ const Members: React.FC = () => {
             setMembersData(data);
         });
     }, []);
-
-    // const deleteSelectedUsers = () => {
-    //     deleteUsers(selectedMembers).then(() => {
-    //         window.location.reload();
-    //     });
-    // };
 
     const updateDataCell = (data: GridEditCellPropsParams) => {
         console.log('data', data);
@@ -171,44 +133,9 @@ const Members: React.FC = () => {
     };
 
     console.log('members');
-    // console.log(selectedMembers);
 
     return (
         <div id="member-dashboard">
-            {/* <div className={classes.buttonWrapper}>
-                <ThemeProvider theme={redButtonTheme}>
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        size="large"
-                        disabled={selectedMembers.length === 0 ? true : false}
-                        onClick={deleteSelectedUsers}
-                    >
-                        Delete members
-                    </Button>
-                </ThemeProvider>
-                <ThemeProvider theme={yellowButtonTheme}>
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        size="large"
-                        onClick={() => setIsModifyPanelOpen(true)}
-                        disabled={selectedMembers.length === 1 ? false : true}
-                    >
-                        Modify members
-                    </Button>
-                </ThemeProvider>
-                <Button
-                    variant="contained"
-                    color="primary"
-                    size="large"
-                    onClick={() => setIsAddPanelOpen(true)}
-                    disabled={selectedMembers.length === 0 ? false : true}
-                >
-                    Add users
-                </Button>
-            </div> */}
-
             <div className={classes.tableWrapper}>
                 <DataGrid
                     columns={columns}
@@ -224,9 +151,6 @@ const Members: React.FC = () => {
                     selectionModel={selectionModel}
                 />
             </div>
-
-            {/* <AddUserModal isOpen={isAddPanelOpen} setIsOpen={setIsAddPanelOpen} /> */}
-            {/* <ModifyUserModal isOpen={isModifyPanelOpen} setIsOpen={setIsModifyPanelOpen} userId={selectedMembers[0]} /> */}
 
             <AddMemberDialog open={isAddPanelOpen} onClose={() => setIsAddPanelOpen(false)} />
 
