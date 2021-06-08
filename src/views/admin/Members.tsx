@@ -1,4 +1,4 @@
-import { createStyles, makeStyles } from '@material-ui/core';
+import { createStyles, Fab, makeStyles, Theme } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 // import { COLORS } from '../../assets/themes/colors';
 // import AddUserModal from '../../components/User/AddUserModal';
@@ -8,8 +8,10 @@ import { CollectionDataType, COLLECTION_ID, PrimitiveTypes } from '../../models/
 import { getCollectionData } from '../../utils/firebase/firestore';
 // import { deleteUsers } from '../../utils/userFunctions';
 import { updateMember } from '../../utils/memberFunctions';
+import { Add } from '@material-ui/icons';
+import AddMemberDialog from '../../components/Member/AddMemberDialog';
 
-const useStyles = makeStyles(() =>
+const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         root: {
             display: 'flex',
@@ -24,6 +26,16 @@ const useStyles = makeStyles(() =>
             marginBottom: '1rem',
             width: '100%',
             height: '84vh',
+        },
+        fabWrapper: {
+            '& > *': {
+                margin: theme.spacing(1),
+            },
+        },
+        fab: {
+            position: 'absolute',
+            bottom: theme.spacing(2),
+            right: theme.spacing(2),
         },
     }),
 );
@@ -122,7 +134,7 @@ const Members: React.FC = () => {
 
     const [membersData, setMembersData] = useState<CollectionDataType>([]);
     // const [selectedMembers, setSelectedMembers] = useState<Array<string>>([]);
-    // const [isAddPanelOpen, setIsAddPanelOpen] = useState(false);
+    const [isAddPanelOpen, setIsAddPanelOpen] = useState(false);
     // const [isModifyPanelOpen, setIsModifyPanelOpen] = useState(false);
 
     useEffect(() => {
@@ -196,6 +208,20 @@ const Members: React.FC = () => {
 
             {/* <AddUserModal isOpen={isAddPanelOpen} setIsOpen={setIsAddPanelOpen} /> */}
             {/* <ModifyUserModal isOpen={isModifyPanelOpen} setIsOpen={setIsModifyPanelOpen} userId={selectedMembers[0]} /> */}
+
+            <AddMemberDialog open={isAddPanelOpen} onClose={() => setIsAddPanelOpen(false)} />
+
+            <div className={classes.fabWrapper}>
+                <Fab
+                    color="primary"
+                    size="large"
+                    aria-label="add"
+                    className={classes.fab}
+                    onClick={() => setIsAddPanelOpen(true)}
+                >
+                    <Add />
+                </Fab>
+            </div>
         </div>
     );
 };

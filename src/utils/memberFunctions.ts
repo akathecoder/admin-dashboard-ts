@@ -4,7 +4,7 @@ import { addDocument, updateDocument } from './firebase/firestore';
 interface createMemberProps {
     (
         name: string,
-        phone: string,
+        phone: number,
         gender: string,
         email: string,
         college: string,

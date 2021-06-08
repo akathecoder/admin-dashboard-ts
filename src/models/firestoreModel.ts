@@ -28,7 +28,7 @@ export interface USER {
 export interface MEMBER {
     id?: string;
     name: string;
-    phone: string;
+    phone: number;
     profileImage?: string;
     gender: string;
     email: string;
