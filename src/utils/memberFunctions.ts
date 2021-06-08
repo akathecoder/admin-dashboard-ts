@@ -1,5 +1,5 @@
 import { COLLECTION_ID, MEMBER, PrimitiveTypes } from '../models/firestoreModel';
-import { addDocument, updateDocument } from './firebase/firestore';
+import { addDocument, deleteDocuments, updateDocument } from './firebase/firestore';
 
 interface createMemberProps {
     (
@@ -113,4 +113,12 @@ export const updateMember: updateMemberProps = async (documentId, field, value) 
     console.log('updated', dataToUpdate);
 
     return updateDocument(COLLECTION_ID.MEMBER, documentId, dataToUpdate);
+};
+
+interface deleteMembersProps {
+    (documentId: Array<string>): Promise<Array<string>>;
+}
+
+export const deleteMembers: deleteMembersProps = async (documentIds) => {
+    return deleteDocuments(COLLECTION_ID.MEMBER, documentIds);
 };

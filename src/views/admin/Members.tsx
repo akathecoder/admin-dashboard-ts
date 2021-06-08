@@ -3,12 +3,19 @@ import React, { useEffect, useState } from 'react';
 // import { COLORS } from '../../assets/themes/colors';
 // import AddUserModal from '../../components/User/AddUserModal';
 // import ModifyUserModal from '../../components/User/ModifyUserModal';
-import { DataGrid, GridColumns, GridRowsProp, GridToolbar, GridEditCellPropsParams } from '@material-ui/data-grid';
+import {
+    DataGrid,
+    GridColumns,
+    GridRowsProp,
+    GridToolbar,
+    GridEditCellPropsParams,
+    GridRowId,
+} from '@material-ui/data-grid';
 import { CollectionDataType, COLLECTION_ID, PrimitiveTypes } from '../../models/firestoreModel';
 import { getCollectionData } from '../../utils/firebase/firestore';
 // import { deleteUsers } from '../../utils/userFunctions';
-import { updateMember } from '../../utils/memberFunctions';
-import { Add } from '@material-ui/icons';
+import { updateMember, deleteMembers } from '../../utils/memberFunctions';
+import { Add, Delete } from '@material-ui/icons';
 import AddMemberDialog from '../../components/Member/AddMemberDialog';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -31,11 +38,11 @@ const useStyles = makeStyles((theme: Theme) =>
             '& > *': {
                 margin: theme.spacing(1),
             },
-        },
-        fab: {
-            position: 'absolute',
             bottom: theme.spacing(2),
             right: theme.spacing(2),
+            position: 'absolute',
+            display: 'flex',
+            flexDirection: 'column-reverse',
         },
     }),
 );
@@ -137,6 +144,8 @@ const Members: React.FC = () => {
     const [isAddPanelOpen, setIsAddPanelOpen] = useState(false);
     // const [isModifyPanelOpen, setIsModifyPanelOpen] = useState(false);
 
+    const [selectionModel, setSelectionModel] = React.useState<GridRowId[]>([]);
+
     useEffect(() => {
         getCollectionData(COLLECTION_ID.MEMBER).then((data) => {
             console.log(data);
@@ -152,8 +161,13 @@ const Members: React.FC = () => {
 
     const updateDataCell = (data: GridEditCellPropsParams) => {
         console.log('data', data);
-
         updateMember(data.id as string, data.field, data.props.value as PrimitiveTypes);
+    };
+
+    const deleteSelectedUsers = () => {
+        // TODO: Add confirmation dialog
+
+        deleteMembers(selectionModel as Array<string>);
     };
 
     console.log('members');
@@ -203,6 +217,11 @@ const Members: React.FC = () => {
                         Toolbar: GridToolbar,
                     }}
                     onEditCellChangeCommitted={updateDataCell}
+                    checkboxSelection
+                    onSelectionModelChange={(newSelection) => {
+                        setSelectionModel(newSelection.selectionModel);
+                    }}
+                    selectionModel={selectionModel}
                 />
             </div>
 
@@ -212,14 +231,12 @@ const Members: React.FC = () => {
             <AddMemberDialog open={isAddPanelOpen} onClose={() => setIsAddPanelOpen(false)} />
 
             <div className={classes.fabWrapper}>
-                <Fab
-                    color="primary"
-                    size="large"
-                    aria-label="add"
-                    className={classes.fab}
-                    onClick={() => setIsAddPanelOpen(true)}
-                >
+                <Fab color="primary" size="large" aria-label="add" onClick={() => setIsAddPanelOpen(true)}>
                     <Add />
+                </Fab>
+
+                <Fab color="secondary" size="medium" aria-label="add" onClick={deleteSelectedUsers}>
+                    <Delete />
                 </Fab>
             </div>
         </div>
