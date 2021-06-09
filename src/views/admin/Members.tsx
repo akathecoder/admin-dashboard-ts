@@ -1,18 +1,12 @@
 import { createStyles, Fab, makeStyles, Theme } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
-import {
-    DataGrid,
-    GridColumns,
-    GridRowsProp,
-    GridToolbar,
-    GridEditCellPropsParams,
-    GridRowId,
-} from '@material-ui/data-grid';
+import { GridColumns, GridEditCellPropsParams, GridRowId } from '@material-ui/data-grid';
 import { CollectionDataType, COLLECTION_ID, PrimitiveTypes } from '../../models/firestoreModel';
 import { getCollectionData } from '../../utils/firebase/firestore';
 import { updateMember, deleteMembers } from '../../utils/memberFunctions';
 import { Add, Delete } from '@material-ui/icons';
 import AddMemberDialog from '../../components/Member/AddMemberDialog';
+import CustomDataGrid from '../../components/General/CustomDataGrid';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -137,17 +131,11 @@ const Members: React.FC = () => {
     return (
         <div id="member-dashboard">
             <div className={classes.tableWrapper}>
-                <DataGrid
+                <CustomDataGrid
                     columns={columns}
-                    rows={membersData as GridRowsProp}
-                    components={{
-                        Toolbar: GridToolbar,
-                    }}
+                    rows={membersData}
                     onEditCellChangeCommitted={updateDataCell}
-                    checkboxSelection
-                    onSelectionModelChange={(newSelection) => {
-                        setSelectionModel(newSelection.selectionModel);
-                    }}
+                    setSelectionModel={setSelectionModel}
                     selectionModel={selectionModel}
                 />
             </div>
