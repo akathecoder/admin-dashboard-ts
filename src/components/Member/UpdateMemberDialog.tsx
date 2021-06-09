@@ -10,11 +10,15 @@ import {
     TextField,
     Theme,
 } from '@material-ui/core';
-import React, { useState } from 'react';
+import { GridRowData } from '@material-ui/data-grid';
+import React, { useEffect, useState } from 'react';
+import { MEMBER } from '../../models/firestoreModel';
+import { updateMember } from '../../utils/memberFunctions';
 
 interface UpdateMemberDialogProps {
     open: boolean;
     onClose: () => void;
+    rowData: GridRowData | undefined;
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -26,10 +30,11 @@ const useStyles = makeStyles((theme: Theme) =>
         },
     }),
 );
-const UpdateMemberDialog: React.FC<UpdateMemberDialogProps> = ({ open, onClose }: UpdateMemberDialogProps) => {
+const UpdateMemberDialog: React.FC<UpdateMemberDialogProps> = ({ open, onClose, rowData }: UpdateMemberDialogProps) => {
     const classes = useStyles();
 
     // Member Data States
+    const [id, setId] = useState('');
     const [name, setName] = useState('');
     const [phone, setPhone] = useState<number | null>(null);
     const [profileImage, setProfileImage] = useState('');
@@ -41,25 +46,44 @@ const UpdateMemberDialog: React.FC<UpdateMemberDialogProps> = ({ open, onClose }
     const [yearOfPassing, setYearOfPassing] = useState<number | null>(null);
     const [address, setAddress] = useState('');
 
+    console.log(id);
+
+    useEffect(() => {
+        if (rowData) {
+            setId(rowData.id);
+            setName(rowData.name);
+            setPhone(rowData.phone);
+            setProfileImage(rowData.profileImage);
+            setGender(rowData.gender);
+            setEmail(rowData.email);
+            setCollege(rowData.college);
+            setCurrentProfession(rowData.currentProfession);
+            setUid(rowData.uid);
+            setYearOfPassing(rowData.yearOfPassing);
+            setAddress(rowData.address);
+        }
+    }, [rowData]);
+
     const handleSubmit = () => {
-        if (!name || !phone || !gender || !email || !college || !currentProfession || !uid || !yearOfPassing) {
+        if (!name || !phone || !gender || !email || !college || !currentProfession || !uid || !yearOfPassing || !id) {
             return;
         }
 
-        // createMember(
-        //     name,
-        //     phone,
-        //     gender,
-        //     email,
-        //     college,
-        //     currentProfession,
-        //     uid,
-        //     yearOfPassing,
-        //     profileImage,
-        //     address,
-        // ).then(() => {
-        //     onClose();
-        // });
+        const data: MEMBER = {
+            name,
+            phone,
+            profileImage,
+            gender,
+            email,
+            college,
+            currentProfession,
+            uid,
+            yearOfPassing,
+            address,
+        };
+
+        updateMember(id, data);
+        onClose();
     };
 
     return (

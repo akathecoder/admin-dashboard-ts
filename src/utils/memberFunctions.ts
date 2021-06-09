@@ -1,5 +1,5 @@
-import { COLLECTION_ID, MEMBER, PrimitiveTypes } from '../models/firestoreModel';
-import { addDocument, deleteDocuments, updateDocument } from './firebase/firestore';
+import { COLLECTION_ID, MEMBER } from '../models/firestoreModel';
+import { addDocument, deleteDocuments, setDocument } from './firebase/firestore';
 
 interface createMemberProps {
     (
@@ -45,74 +45,11 @@ export const createMember: createMemberProps = async (
 };
 
 interface updateMemberProps {
-    (documentId: string, field: string, value: PrimitiveTypes): Promise<void>;
+    (documentId: string, data: MEMBER): Promise<void>;
 }
 
-export const updateMember: updateMemberProps = async (documentId, field, value) => {
-    // console.log('data', data);
-
-    let dataToUpdate = {};
-
-    switch (field) {
-        case 'name':
-            dataToUpdate = {
-                name: value,
-            };
-            break;
-
-        case 'phone':
-            dataToUpdate = {
-                phone: Number(value),
-            };
-            break;
-        case 'profileImage':
-            dataToUpdate = {
-                profileImage: value,
-            };
-            break;
-        case 'gender':
-            dataToUpdate = {
-                gender: value,
-            };
-            break;
-        case 'email':
-            dataToUpdate = {
-                email: value,
-            };
-            break;
-        case 'college':
-            dataToUpdate = {
-                college: value,
-            };
-            break;
-        case 'currentProfession':
-            dataToUpdate = {
-                currentProfession: value,
-            };
-            break;
-        case 'uid':
-            dataToUpdate = {
-                uid: value,
-            };
-            break;
-        case 'yearOfPassing':
-            dataToUpdate = {
-                yearOfPassing: Number(value),
-            };
-            break;
-        case 'address':
-            dataToUpdate = {
-                address: value,
-            };
-            break;
-
-        default:
-            break;
-    }
-
-    console.log('updated', dataToUpdate);
-
-    return updateDocument(COLLECTION_ID.MEMBER, documentId, dataToUpdate);
+export const updateMember: updateMemberProps = async (documentId, data) => {
+    return setDocument(COLLECTION_ID.MEMBER, documentId, data);
 };
 
 interface deleteMembersProps {
