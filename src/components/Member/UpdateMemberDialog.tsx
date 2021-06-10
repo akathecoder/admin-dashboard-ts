@@ -7,13 +7,15 @@ import {
     DialogContentText,
     DialogTitle,
     makeStyles,
-    TextField,
     Theme,
 } from '@material-ui/core';
 import { GridRowData } from '@material-ui/data-grid';
-import React, { useEffect, useState } from 'react';
+import * as yup from 'yup';
+import { useFormik, FormikHelpers } from 'formik';
+import React, { useEffect } from 'react';
 import { MEMBER } from '../../models/firestoreModel';
 import { updateMember } from '../../utils/memberFunctions';
+import MemberForm from './MemberForm';
 
 interface UpdateMemberDialogProps {
     open: boolean;
@@ -30,41 +32,62 @@ const useStyles = makeStyles((theme: Theme) =>
         },
     }),
 );
+
+const validationSchema = yup.object({
+    name: yup.string().required('Name is required'),
+    phone: yup.number().required('Phone number is required'),
+    gender: yup.string().oneOf(['male', 'female'], 'Gender is ').required('Gender is required'),
+    email: yup.string().email('Enter a valid email').required('Email is required'),
+    college: yup.string().required('Email is required'),
+    currentProfession: yup.string().required('Current Profession is required'),
+    uid: yup.string().required('UID is required'),
+    yearOfPassing: yup.number().required('Year of Passing is required'),
+    profileImage: yup.string().url('Enter a valid Profile Picture').optional(),
+    address: yup.string().optional(),
+});
+
+const initialValues: MEMBER = {
+    name: '',
+    phone: 0,
+    gender: '',
+    email: '',
+    college: '',
+    currentProfession: '',
+    uid: '',
+    yearOfPassing: 0,
+    profileImage: '',
+    address: '',
+};
+
 const UpdateMemberDialog: React.FC<UpdateMemberDialogProps> = ({ open, onClose, rowData }: UpdateMemberDialogProps) => {
     const classes = useStyles();
 
-    // Member Data States
-    const [id, setId] = useState('');
-    const [name, setName] = useState('');
-    const [phone, setPhone] = useState<number | null>(null);
-    const [profileImage, setProfileImage] = useState('');
-    const [gender, setGender] = useState('');
-    const [email, setEmail] = useState('');
-    const [college, setCollege] = useState('');
-    const [currentProfession, setCurrentProfession] = useState('');
-    const [uid, setUid] = useState('');
-    const [yearOfPassing, setYearOfPassing] = useState<number | null>(null);
-    const [address, setAddress] = useState('');
-
-    console.log(id);
-
     useEffect(() => {
         if (rowData) {
-            setId(rowData.id);
-            setName(rowData.name);
-            setPhone(rowData.phone);
-            setProfileImage(rowData.profileImage);
-            setGender(rowData.gender);
-            setEmail(rowData.email);
-            setCollege(rowData.college);
-            setCurrentProfession(rowData.currentProfession);
-            setUid(rowData.uid);
-            setYearOfPassing(rowData.yearOfPassing);
-            setAddress(rowData.address);
+            formik.setValues(rowData as MEMBER);
         }
     }, [rowData]);
 
-    const handleSubmit = () => {
+    const handleClose = () => {
+        formik.resetForm();
+        onClose();
+    };
+
+    const handleSubmit = (values: MEMBER, { setSubmitting, resetForm }: FormikHelpers<MEMBER>) => {
+        const {
+            id,
+            name,
+            phone,
+            gender,
+            email,
+            college,
+            currentProfession,
+            uid,
+            yearOfPassing,
+            profileImage,
+            address,
+        } = values;
+
         if (!name || !phone || !gender || !email || !college || !currentProfession || !uid || !yearOfPassing || !id) {
             return;
         }
@@ -82,127 +105,35 @@ const UpdateMemberDialog: React.FC<UpdateMemberDialogProps> = ({ open, onClose, 
             address,
         };
 
-        updateMember(id, data);
-        onClose();
+        updateMember(id, data).then(() => {
+            setSubmitting(false);
+            resetForm();
+            onClose();
+        });
     };
 
+    const formik = useFormik<MEMBER>({
+        initialValues: initialValues,
+        validationSchema: validationSchema,
+        onSubmit: handleSubmit,
+    });
+
     return (
-        <Dialog onClose={onClose} open={open}>
+        <Dialog onClose={handleClose} open={open}>
             <DialogTitle id="simple-dialog-title">Update Member</DialogTitle>
             <DialogContent>
                 <DialogContentText>Fill in the data for the new member.</DialogContentText>
 
-                <form noValidate autoComplete="off" className={classes.root}>
-                    <TextField
-                        id="newMemberProfilePic"
-                        label="Profile Picture"
-                        helperText="Please enter user's DP"
-                        variant="standard"
-                        value={profileImage}
-                        onChange={(e) => setProfileImage(e.target.value)}
-                        fullWidth
-                    />
-                    <TextField
-                        id="newMemberUid"
-                        label="UID"
-                        helperText="Please enter user's uid"
-                        variant="standard"
-                        value={uid}
-                        onChange={(e) => setUid(e.target.value)}
-                        required
-                        fullWidth
-                    />
-                    <TextField
-                        id="newMemberName"
-                        label="Name"
-                        helperText="Please enter user's name"
-                        variant="standard"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        required
-                        fullWidth
-                    />
-
-                    <TextField
-                        id="newMemberPhone"
-                        label="Phone"
-                        type="number"
-                        helperText="Please enter user's phone number"
-                        variant="standard"
-                        value={phone}
-                        onChange={(e) => setPhone(Number(e.target.value))}
-                        required
-                        fullWidth
-                    />
-
-                    <TextField
-                        id="newMemberGender"
-                        label="Gender"
-                        helperText="Please select user's Gender"
-                        variant="standard"
-                        value={gender}
-                        onChange={(e) => setGender(e.target.value)}
-                        required
-                        fullWidth
-                    />
-
-                    <TextField
-                        id="newMemberEmail"
-                        label="Email ID"
-                        helperText="Please enter user's email id"
-                        variant="standard"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                        fullWidth
-                    />
-
-                    <TextField
-                        id="newMemberCollege"
-                        label="College"
-                        helperText="Please enter user's college"
-                        variant="standard"
-                        value={college}
-                        onChange={(e) => setCollege(e.target.value)}
-                        required
-                        fullWidth
-                    />
-
-                    <TextField
-                        id="newMemberCurrentProfession"
-                        label="Current Profession"
-                        helperText="Please enter user's current profession"
-                        variant="standard"
-                        value={currentProfession}
-                        onChange={(e) => setCurrentProfession(e.target.value)}
-                        required
-                        fullWidth
-                    />
-
-                    <TextField
-                        id="newMemberYearOfPassing"
-                        label="Year of Passing"
-                        helperText="Please enter user's year of Passing"
-                        variant="standard"
-                        value={yearOfPassing}
-                        onChange={(e) => setYearOfPassing(Number(e.target.value))}
-                        required
-                        fullWidth
-                    />
-
-                    <TextField
-                        id="newMemberAddress"
-                        label="Address"
-                        helperText="Please enter user's address"
-                        variant="standard"
-                        value={address}
-                        onChange={(e) => setAddress(e.target.value)}
-                        fullWidth
-                    />
-                </form>
+                <MemberForm formik={formik} />
             </DialogContent>
             <DialogActions className={classes.root}>
-                <Button color="primary" variant="text" size="large" onClick={handleSubmit}>
+                <Button
+                    color="primary"
+                    variant="text"
+                    size="large"
+                    onClick={formik.submitForm}
+                    disabled={formik.isSubmitting}
+                >
                     Update
                 </Button>
             </DialogActions>

@@ -4,7 +4,7 @@ import { useFormik, FormikHelpers } from 'formik';
 import * as yup from 'yup';
 import { createMember } from '../../utils/memberFunctions';
 import { MEMBER } from '../../models/firestoreModel';
-import AddMemberForm from './AddMemberForm';
+import MemberForm from './MemberForm';
 
 interface AddMemberDialogProps {
     open: boolean;
@@ -82,7 +82,7 @@ const AddMemberDialog: React.FC<AddMemberDialogProps> = ({ open, onClose }: AddM
             <DialogTitle id="simple-dialog-title">Add Member</DialogTitle>
             <DialogContent>
                 <DialogContentText>Fill in the data for the new member.</DialogContentText>
-                <AddMemberForm formik={formik} />
+                <MemberForm formik={formik} />
             </DialogContent>
             <DialogActions>
                 <Button

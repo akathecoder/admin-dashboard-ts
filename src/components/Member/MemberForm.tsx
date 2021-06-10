@@ -13,11 +13,11 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-interface AddMemberFormProps {
+interface MemberFormProps {
     formik: FormikProps<MEMBER>;
 }
 
-const AddMemberForm: React.FC<AddMemberFormProps> = ({ formik }: AddMemberFormProps) => {
+const MemberForm: React.FC<MemberFormProps> = ({ formik }: MemberFormProps) => {
     const classes = useStyles();
 
     return (
@@ -145,4 +145,4 @@ const AddMemberForm: React.FC<AddMemberFormProps> = ({ formik }: AddMemberFormPr
     );
 };
 
-export default AddMemberForm;
+export default MemberForm;
