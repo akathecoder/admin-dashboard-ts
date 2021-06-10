@@ -109,6 +109,7 @@ const UpdateMemberDialog: React.FC<UpdateMemberDialogProps> = ({ open, onClose, 
             setSubmitting(false);
             resetForm();
             onClose();
+            window.location.reload();
         });
     };
 

@@ -68,6 +68,7 @@ const AddMemberDialog: React.FC<AddMemberDialogProps> = ({ open, onClose }: AddM
             setSubmitting(false);
             resetForm();
             onClose();
+            window.location.reload();
         });
     };
 

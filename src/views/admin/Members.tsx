@@ -111,7 +111,9 @@ const Members: React.FC = () => {
     const deleteSelectedUsers = () => {
         // TODO: Add confirmation dialog
 
-        deleteMembers(selectedRows as Array<string>);
+        deleteMembers(selectedRows as Array<string>).then(() => {
+            window.location.reload();
+        });
     };
 
     console.log('members');
