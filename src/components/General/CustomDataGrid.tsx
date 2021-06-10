@@ -1,13 +1,40 @@
 import React from 'react';
 import { DataGrid, GridRowsProp, GridToolbar, GridColumns, GridRowId, GridRowParams } from '@material-ui/data-grid';
-import { createStyles, makeStyles } from '@material-ui/core';
+import { createStyles, makeStyles, Theme } from '@material-ui/core';
 import { CollectionDataType } from '../../models/firestoreModel';
 
-const useStyles = makeStyles(() =>
+const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         dataGridRoot: {
+            border: 0,
+            backgroundColor: theme.palette.type === 'light' ? '#ffffff' : '#1d1d1d',
+            boxShadow: '0 8px 16px 0 rgba(0,0,0,0.2)',
+
+            color: theme.palette.type === 'light' ? 'rgba(0,0,0,.85)' : 'rgba(255,255,255,0.85)',
+            '& .MuiDataGrid-columnsContainer': {
+                backgroundColor: theme.palette.type === 'light' ? '#ffffff' : '#1d1d1d',
+                fontWeight: 500,
+                fontSize: 13,
+            },
+            '& .MuiDataGrid-columnHeader': {},
+            '& .MuiDataGrid-toolbar': {
+                backgroundColor: theme.palette.type === 'light' ? '#ffffff' : '#1d1d1d',
+            },
             '& .MuiDataGrid-iconSeparator': {
                 display: 'none',
+            },
+            // Vertical Borders
+            // '& .MuiDataGrid-columnHeader, .MuiDataGrid-cell': {
+            //     borderRight: `1px solid ${theme.palette.type === 'light' ? '#f0f0f0' : '#303030'}`,
+            // },
+            '& .MuiDataGrid-columnsContainer, .MuiDataGrid-cell': {
+                borderBottom: `1px solid ${theme.palette.type === 'light' ? '#f0f0f0' : '#303030'}`,
+            },
+            '& .MuiDataGrid-cell': {
+                color: theme.palette.type === 'light' ? 'rgba(0,0,0,.85)' : 'rgba(255,255,255,0.65)',
+            },
+            '& .MuiDataGrid-row': {
+                backgroundColor: theme.palette.type === 'light' ? '#ffffff' : '#1d1d1d',
             },
         },
     }),
