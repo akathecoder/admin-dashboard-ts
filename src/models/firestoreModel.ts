@@ -39,7 +39,7 @@ export interface MEMBER {
     address?: string;
 }
 
-enum articleTypes {
+export enum articleTypes {
     BLOG = 'blog',
     NEWS = 'news',
 }
