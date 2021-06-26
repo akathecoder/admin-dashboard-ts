@@ -7,14 +7,14 @@ interface createFeedbackProps {
 }
 
 export const createFeedback: createFeedbackProps = async (uid, name, feedback, createdAt) => {
-    const memberDataToAdd: FEEDBACK = {
+    const feedbackDataToAdd: FEEDBACK = {
         uid: uid,
         name: name,
         feedback: feedback,
         createdAt: createdAt,
     };
 
-    return addDocument(COLLECTION_ID.FEEDBACK, memberDataToAdd);
+    return addDocument(COLLECTION_ID.FEEDBACK, feedbackDataToAdd);
 };
 
 interface updateFeedbackProps {
