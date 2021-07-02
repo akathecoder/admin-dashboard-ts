@@ -94,7 +94,7 @@ const CustomDataGrid: React.FC<CustomDataGridProps> = ({
                 setSelectionModel(newSelection.selectionModel);
             }}
             selectionModel={selectionModel}
-            hideFooter={true}
+            // hideFooter={true}
             disableSelectionOnClick
             onRowClick={handleRowClick}
         />
