@@ -1,12 +1,14 @@
 import { Button, createMuiTheme, createStyles, makeStyles, ThemeProvider } from '@material-ui/core';
 import React, { useState, useEffect } from 'react';
 import DataTable from '../../components/User/UserDataTable';
-import { CollectionDataType, COLLECTION_ID, USER } from '../../models/firestoreModel';
+import { CollectionDataType, COLLECTION_ID, USER, userRoleTypes } from '../../models/firestoreModel';
 import { getCollectionData } from '../../utils/firebase/firestore';
 import { COLORS } from '../../assets/themes/colors';
 import AddUserModal from '../../components/User/AddUserModal';
 import { deleteUsers } from '../../utils/userFunctions';
 import ModifyUserModal from '../../components/User/ModifyUserModal';
+import { firebaseAuth } from '../../utils/firebase/firebase';
+import { getUserRole } from '../../utils/generalFunctions';
 
 const useStyles = makeStyles(() =>
     createStyles({
@@ -50,6 +52,18 @@ const Users: React.FC = () => {
     const [selectedUsers, setSelectedUsers] = useState<Array<string>>([]);
     const [isAddUserPanelOpen, setIsAddUserPanelOpen] = useState(false);
     const [isModifyUserPanelOpen, setIsModifyUserPanelOpen] = useState(false);
+    const [userRole, setUserRole] = useState<string>('');
+
+    const user = firebaseAuth.currentUser;
+    console.log(user);
+
+    useEffect(() => {
+        if (user) {
+            getUserRole(user?.uid).then((data) => {
+                setUserRole(data);
+            });
+        }
+    }, [user]);
 
     useEffect(() => {
         getCollectionData(COLLECTION_ID.USER).then((data) => {
@@ -69,39 +83,41 @@ const Users: React.FC = () => {
 
     return (
         <div id="user-dashboard">
-            <div className={classes.buttonWrapper}>
-                <ThemeProvider theme={redButtonTheme}>
+            {userRole === userRoleTypes.ADMIN && (
+                <div className={classes.buttonWrapper}>
+                    <ThemeProvider theme={redButtonTheme}>
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            size="large"
+                            disabled={selectedUsers.length === 0 ? true : false}
+                            onClick={deleteSelectedUsers}
+                        >
+                            Delete users
+                        </Button>
+                    </ThemeProvider>
+                    <ThemeProvider theme={yellowButtonTheme}>
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            size="large"
+                            onClick={() => setIsModifyUserPanelOpen(true)}
+                            disabled={selectedUsers.length === 1 ? false : true}
+                        >
+                            Modify users
+                        </Button>
+                    </ThemeProvider>
                     <Button
                         variant="contained"
                         color="primary"
                         size="large"
-                        disabled={selectedUsers.length === 0 ? true : false}
-                        onClick={deleteSelectedUsers}
+                        onClick={() => setIsAddUserPanelOpen(true)}
+                        disabled={selectedUsers.length === 0 ? false : true}
                     >
-                        Delete users
+                        Add users
                     </Button>
-                </ThemeProvider>
-                <ThemeProvider theme={yellowButtonTheme}>
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        size="large"
-                        onClick={() => setIsModifyUserPanelOpen(true)}
-                        disabled={selectedUsers.length === 1 ? false : true}
-                    >
-                        Modify users
-                    </Button>
-                </ThemeProvider>
-                <Button
-                    variant="contained"
-                    color="primary"
-                    size="large"
-                    onClick={() => setIsAddUserPanelOpen(true)}
-                    disabled={selectedUsers.length === 0 ? false : true}
-                >
-                    Add users
-                </Button>
-            </div>
+                </div>
+            )}
 
             <div className={classes.tableWrapper}>
                 <DataTable

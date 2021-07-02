@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { DataGrid, GridRowsProp, GridToolbar, GridColumns, GridRowId, GridRowParams } from '@material-ui/data-grid';
 import { createStyles, makeStyles, Theme } from '@material-ui/core';
-import { CollectionDataType } from '../../models/firestoreModel';
+import { CollectionDataType, userRoleTypes } from '../../models/firestoreModel';
+import { firebaseAuth } from '../../utils/firebase/firebase';
+import { getUserRole } from '../../utils/generalFunctions';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -59,9 +61,24 @@ const CustomDataGrid: React.FC<CustomDataGridProps> = ({
 }: CustomDataGridProps) => {
     const classes = useStyles();
 
+    const [userRole, setUserRole] = useState<string>('');
+
+    const user = firebaseAuth.currentUser;
+    console.log(user);
+
+    useEffect(() => {
+        if (user) {
+            getUserRole(user?.uid).then((data) => {
+                setUserRole(data);
+            });
+        }
+    }, [user]);
+
     const handleRowClick = (row: GridRowParams) => {
-        setClickedRow(row);
-        setUpdatePanelOpen(true);
+        if (userRole === userRoleTypes.ADMIN) {
+            setClickedRow(row);
+            setUpdatePanelOpen(true);
+        }
     };
 
     return (

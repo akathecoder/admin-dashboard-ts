@@ -1,13 +1,15 @@
 import { createStyles, Fab, makeStyles, Theme } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import { GridColumns, GridRowId, GridRowParams } from '@material-ui/data-grid';
-import { CollectionDataType, COLLECTION_ID } from '../../models/firestoreModel';
+import { CollectionDataType, COLLECTION_ID, userRoleTypes } from '../../models/firestoreModel';
 import { getCollectionData } from '../../utils/firebase/firestore';
 import { Add, Delete } from '@material-ui/icons';
 import CustomDataGrid from '../../components/General/CustomDataGrid';
 import { deleteReport } from '../../utils/reportFunctions';
 import AddReportDialog from '../../components/Report/AddReportDialog';
 import UpdateReportDialog from '../../components/Report/UpdateReportDialog';
+import { getUserRole } from '../../utils/generalFunctions';
+import { firebaseAuth } from '../../utils/firebase/firebase';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -83,6 +85,18 @@ const Report: React.FC = () => {
     const [isUpdatePanelOpen, setIsUpdatePanelOpen] = useState(false);
     const [selectedRows, setSelectedRows] = React.useState<GridRowId[]>([]);
     const [clickedRow, setClickedRow] = useState<GridRowParams>();
+    const [userRole, setUserRole] = useState<string>('');
+
+    const user = firebaseAuth.currentUser;
+    console.log(user);
+
+    useEffect(() => {
+        if (user) {
+            getUserRole(user?.uid).then((data) => {
+                setUserRole(data);
+            });
+        }
+    }, [user]);
 
     useEffect(() => {
         getCollectionData(COLLECTION_ID.REPORT).then((data) => {
@@ -121,15 +135,17 @@ const Report: React.FC = () => {
                 rowData={clickedRow?.row}
             />
 
-            <div className={classes.fabWrapper}>
-                <Fab color="primary" size="large" aria-label="add" onClick={() => setIsAddPanelOpen(true)}>
-                    <Add />
-                </Fab>
+            {userRole === userRoleTypes.ADMIN && (
+                <div className={classes.fabWrapper}>
+                    <Fab color="primary" size="large" aria-label="add" onClick={() => setIsAddPanelOpen(true)}>
+                        <Add />
+                    </Fab>
 
-                <Fab color="secondary" size="medium" aria-label="add" onClick={deleteSelectedUsers}>
-                    <Delete />
-                </Fab>
-            </div>
+                    <Fab color="secondary" size="medium" aria-label="add" onClick={deleteSelectedUsers}>
+                        <Delete />
+                    </Fab>
+                </div>
+            )}
         </div>
     );
 };
