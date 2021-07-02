@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme: Theme) =>
                 margin: theme.spacing(1),
             },
             bottom: theme.spacing(2),
-            right: theme.spacing(2),
+            // right: theme.spacing(2),
             position: 'absolute',
             display: 'flex',
             flexDirection: 'column-reverse',
